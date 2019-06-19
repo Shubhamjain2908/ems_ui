@@ -1,0 +1,83 @@
+<section class="full-height-wrapper bg-theme-grey auth-bg">
+  <div class="section-content full-height-wrapper">
+    <div class="centered-box shadow-lg">
+      <div class="box-image bg-theme-yellow">
+        <figure>
+          <img src="../../../assets/project-images/Color logo - no background.svg" alt="Delivr Logo">
+        </figure>
+      </div>
+      <div class="box-content bg-white">
+        <div class="content">
+          <h3 class="heading font-medium color-dark-grey">Register</h3>
+          <p class="sub-heading font-medium color-light-grey">Welcome, please create your account.</p>
+
+          <!-- Login Form Start -->
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="auth-form custom-form">
+
+            <input type="email" placeholder="Email" formControlName="email">
+            <!-- <div *ngIf="email.errors.required">
+              Name is required.
+            </div> -->
+            <div
+              *ngIf="registerForm.controls['email'].hasError('required') && (registerForm.controls['email'].dirty || registerForm.controls['email'].touched)"
+              class="error">
+              Please enter email.
+            </div>
+            <div *ngIf="registerForm.controls.email.errors?.email" class="error">
+              Please provide valid email id
+            </div>
+
+            <input type="text" placeholder="User name" formControlName="username">
+            <div
+              *ngIf="registerForm.controls['username'].hasError('required')  && (registerForm.controls['username'].dirty || registerForm.controls['username'].touched)"
+              class="error">
+              Please enter a username
+            </div>
+
+            <input type="text" placeholder="Name" formControlName="name">
+            <div
+              *ngIf="registerForm.controls['name'].hasError('required')  && (registerForm.controls['name'].dirty || registerForm.controls['name'].touched)"
+              class="error">
+              Please enter a name
+            </div>
+
+            <input type="text" placeholder="mobile" formControlName="mobile">
+            <div
+              *ngIf="registerForm.controls['mobile'].hasError('required')  && (registerForm.controls['mobile'].dirty || registerForm.controls['mobile'].touched)"
+              class="error">
+              Please enter a mobile number
+            </div>
+
+            <input type="address" placeholder="address" formControlName="address">
+            <div
+              *ngIf="registerForm.controls['address'].hasError('required')  && (registerForm.controls['address'].dirty || registerForm.controls['address'].touched)"
+              class="error">
+              Please enter a address
+            </div>
+
+            <input type="password" placeholder="Password" formControlName="password">
+            <div
+              *ngIf="registerForm.controls['password'].hasError('required')  && (registerForm.controls['password'].dirty || registerForm.controls['password'].touched)"
+              class="error">
+              Please enter a password
+            </div>
+            <div class="action-items d-flex justify-content-between">
+              <div class="remember-me">
+                <p-checkbox styleClass="custom-checkbox" labelStyleClass="checkbox-label" name="rememberme"
+                  label="I accept all terms & conditions" [(ngModel)]="checked" [ngModelOptions]="{standalone: true}"
+                  binary="true">
+                </p-checkbox>
+              </div>
+
+              <div class="forget-password"><a href="#" class="no-style-link font-medium" routerLink="../login">Login</a>
+              </div>
+
+            </div>
+            <button type="submit" title="Login" [disabled]="!registerForm.valid || (checked == false)"
+              class="custom-btn yellow-btn text-center block-center">Register</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
