@@ -90,6 +90,12 @@
               class="error">
               Password does not matched
             </div>
+            <div *ngIf="registerForm.controls['confirmpassword'].hasError('minlength')" class="error">
+              Password must be minimum 8 characters long
+            </div>
+            <div *ngIf="registerForm.controls['confirmpassword'].hasError('pattern')" class="error">
+              Password must have at least one number, one lowercase and one uppercase letter
+            </div>
 
 
             <div class="action-items d-flex justify-content-between">
