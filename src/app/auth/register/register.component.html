@@ -33,6 +33,9 @@
               class="error">
               Please enter a username
             </div>
+            <div *ngIf="registerForm.controls['username'].hasError('pattern')" class="error">
+              Username must be an Alphanumeric value
+            </div>
 
             <input type="text" placeholder="Name" formControlName="name">
             <div
@@ -47,12 +50,20 @@
               class="error">
               Please enter a mobile number
             </div>
+            <div
+              *ngIf="registerForm.controls['mobile'].hasError('minlength') || registerForm.controls['mobile'].hasError('maxlength')"
+              class="error">
+              Mobile no must be of length 7-10 digits
+            </div>
 
             <input type="address" placeholder="address" formControlName="address">
             <div
               *ngIf="registerForm.controls['address'].hasError('required')  && (registerForm.controls['address'].dirty || registerForm.controls['address'].touched)"
               class="error">
               Please enter a address
+            </div>
+            <div *ngIf="registerForm.controls['address'].hasError('maxlength')" class="error">
+              Address must not be greater than 30 words
             </div>
 
             <input type="password" placeholder="Password" formControlName="password">
@@ -61,6 +72,14 @@
               class="error">
               Please enter a password
             </div>
+            <div *ngIf="registerForm.controls['password'].hasError('minlength')" class="error">
+              Password must be minimum 8 characters long
+            </div>
+            <div *ngIf="registerForm.controls['password'].hasError('pattern')" class="error">
+              Password must have at least one number, one lowercase and one uppercase letter
+            </div>
+
+
             <div class="action-items d-flex justify-content-between">
               <div class="remember-me">
                 <p-checkbox styleClass="custom-checkbox" labelStyleClass="checkbox-label" name="rememberme"

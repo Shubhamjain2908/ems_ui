@@ -17,12 +17,14 @@ export class RegisterComponent implements OnInit {
   public checked = false;
 
   registerForm = new FormGroup({
-    username: new FormControl('', [Validators.required, noWhitespaceValidator]),
+    username: new FormControl('', [Validators.required, noWhitespaceValidator, Validators.pattern(/^[a-z0-9]+$/i)]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    mobile: new FormControl('', [Validators.required, noWhitespaceValidator]),
-    address: new FormControl('', [Validators.required, noWhitespaceValidator]),
+    mobile: new FormControl('', [Validators.required, noWhitespaceValidator, Validators.minLength(7), Validators.maxLength(10)]),
+    address: new FormControl('', [Validators.required, noWhitespaceValidator, Validators.maxLength(30)]),
     name: new FormControl('', [Validators.required, noWhitespaceValidator]),
-    password: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required,
+    Validators.minLength(8),
+    Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/)]),
   });
 
   constructor(private _httpService: AuthService, private cookieService: CookieService, private _router: Router) { }
@@ -31,6 +33,10 @@ export class RegisterComponent implements OnInit {
     if (this.cookieService.get('User')) {
       this._router.navigate(['/dashboard']);
     }
+  }
+
+  f() {
+    console.log(" ==> ", this.registerForm.controls['password'].hasError('minlength'));
   }
 
   onSubmit() {
