@@ -43,8 +43,8 @@ export class AuthService {
   }
 
   signinUser(data): Observable<any> {
-    let user = {};
-    let userInfo = new BehaviorSubject<any>(user);
+    const user = {};
+    const userInfo = new BehaviorSubject<any>(user);
     return userInfo;
   }
 

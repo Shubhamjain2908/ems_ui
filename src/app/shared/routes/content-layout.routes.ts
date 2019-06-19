@@ -1,10 +1,10 @@
-import { Routes, RouterModule } from '@angular/router';
+import { Routes } from '@angular/router';
 
-//Route for content layout without sidebar, navbar and footer for pages like Login, Registration etc...
+// Route for content layout without sidebar, navbar and footer for pages like Login, Registration etc...
 
 export const CONTENT_ROUTES: Routes = [
-    {
-        path: 'auth',
-        loadChildren: './auth/auth.module#AuthModule'
-    }
+  {
+    path: 'auth',
+    loadChildren: './auth/auth.module#AuthModule'
+  }
 ];

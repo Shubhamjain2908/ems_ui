@@ -39,7 +39,7 @@ export class RegisterComponent implements OnInit {
         if (result.error) {
           alert(result.error);
         } else {
-          this.cookieService.put('user', result);
+          this.cookieService.put('User', JSON.stringify(result));
           this._router.navigate(['/dashboard']);
         }
       },
