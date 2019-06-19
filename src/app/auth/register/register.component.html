@@ -80,6 +80,18 @@
             </div>
 
 
+            <input type="password" placeholder="Confirm Password" formControlName="confirmpassword">
+            <div
+              *ngIf="registerForm.controls['confirmpassword'].hasError('required')  && (registerForm.controls['confirmpassword'].dirty || registerForm.controls['confirmpassword'].touched)"
+              class="error">
+              Please re-enter the password
+            </div>
+            <div *ngIf="registerForm.controls['password'].value !== registerForm.controls['confirmpassword'].value"
+              class="error">
+              Password does not matched
+            </div>
+
+
             <div class="action-items d-flex justify-content-between">
               <div class="remember-me">
                 <p-checkbox styleClass="custom-checkbox" labelStyleClass="checkbox-label" name="rememberme"

@@ -25,6 +25,9 @@ export class RegisterComponent implements OnInit {
     password: new FormControl('', [Validators.required,
     Validators.minLength(8),
     Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/)]),
+    confirmpassword: new FormControl('', [Validators.required,
+    Validators.minLength(8),
+    Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/)]),
   });
 
   constructor(private _httpService: AuthService, private cookieService: CookieService, private _router: Router) { }
@@ -40,6 +43,7 @@ export class RegisterComponent implements OnInit {
     if (!this.checked) {
       alert('Please accept the terms & conditions');
     } else {
+      delete data.confirmpassword;
       this._httpService.signupUser(data).subscribe(
         (result: any) => {
           if (result.error) {
