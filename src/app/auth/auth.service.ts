@@ -18,18 +18,14 @@ export class AuthService {
   signupUser(data): Observable<any> {
     let user = {};
     let userExists = false;
-    const email = data.email;
-    const username = data.username;
-    const mobile = data.mobile;
-    console.log('Map => ', this.allUsers)
     this.allUsers.map(a => {
-      if (a.email === email) {
+      if (a.email === data.email) {
         userExists = true;
         data.error = 'User already exists with this email';
-      } else if (a.username === username) {
+      } else if (a.username === data.username) {
         userExists = true;
         data.error = 'User already exists with this username';
-      } else if (a.mobile === mobile) {
+      } else if (a.mobile === data.mobile) {
         userExists = true;
         data.error = 'User already exists with this mobile';
       }
@@ -43,9 +39,26 @@ export class AuthService {
   }
 
   signinUser(data): Observable<any> {
-    const user = {};
-    const userInfo = new BehaviorSubject<any>(user);
-    return userInfo;
+    let userExists = false;
+    const type = data.type;
+    const id = data.id;
+    const password = data.password;
+    this.allUsers.map(a => {
+      if (type === 'email' && a.email === id && a.password === password) {
+        userExists = true;
+        return new BehaviorSubject<any>(data);
+      } else if (type === 'username' && a.username === id && a.password === password) {
+        userExists = true;
+        return new BehaviorSubject<any>(data);
+      } else if (type === 'mobile' && a.mobile === id && a.password === password) {
+        userExists = true;
+        return new BehaviorSubject<any>(data);
+      }
+    });
+    if (!userExists) {
+      data.error = 'No user exists with this ' + type + ' & password';
+    }
+    return new BehaviorSubject<any>(data);
   }
 
   logout() {

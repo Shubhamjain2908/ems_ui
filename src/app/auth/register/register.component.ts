@@ -14,7 +14,6 @@ import { Router } from '@angular/router';
 export class RegisterComponent implements OnInit {
 
   public error;
-  private allUsers = [];
   public checked = false;
 
   registerForm = new FormGroup({
@@ -29,7 +28,9 @@ export class RegisterComponent implements OnInit {
   constructor(private _httpService: AuthService, private cookieService: CookieService, private _router: Router) { }
 
   ngOnInit() {
-    this.allUsers = JSON.parse(localStorage.getItem('users'));
+    if (this.cookieService.get('User')) {
+      this._router.navigate(['/dashboard']);
+    }
   }
 
   onSubmit() {
@@ -40,6 +41,7 @@ export class RegisterComponent implements OnInit {
           alert(result.error);
         } else {
           this.cookieService.put('User', JSON.stringify(result));
+          this.registerForm.reset();
           this._router.navigate(['/dashboard']);
         }
       },
