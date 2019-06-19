@@ -71,8 +71,8 @@ export class AuthService {
     return this.token;
   }
 
-  getUsers() {
-    return this.allUsers;
+  getUsers(): Observable<any> {
+    return new BehaviorSubject<any>(this.allUsers);
   }
 
   isAuthenticated() {
