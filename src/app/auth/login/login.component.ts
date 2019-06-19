@@ -13,6 +13,7 @@ import { CookieService } from 'ngx-cookie';
 export class LoginComponent implements OnInit {
 
   public error;
+  public checked = true;
 
   loginForm = new FormGroup({
     id: new FormControl('', [Validators.required, noWhitespaceValidator]),
@@ -25,9 +26,16 @@ export class LoginComponent implements OnInit {
     if (this.cookieService.get('User')) {
       this._router.navigate(['/dashboard']);
     }
+    if (localStorage.getItem('rememberme') === 'true') {
+      this.loginForm.controls['id'].setValue(localStorage.getItem('id'));
+      this.loginForm.controls['password'].setValue(localStorage.getItem('password'));
+    }
   }
 
   onSubmit() {
+    localStorage.removeItem('id');
+    localStorage.removeItem('password');
+    localStorage.removeItem('rememberme');
     const data = this.loginForm.value;
     const id = data.id;
     if (this.isEmail(id)) {
@@ -46,6 +54,11 @@ export class LoginComponent implements OnInit {
           alert(result.error);
         } else {
           this.cookieService.put('User', JSON.stringify(result));
+          if (this.checked) {
+            localStorage.setItem('id', id);
+            localStorage.setItem('password', data.password);
+            localStorage.setItem('rememberme', 'true');
+          }
           this.loginForm.reset();
           this._router.navigate(['/dashboard']);
         }

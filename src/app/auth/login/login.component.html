@@ -28,8 +28,8 @@
             </div>
             <div class="action-items d-flex justify-content-between">
               <div class="remember-me">
-                <p-checkbox styleClass="custom-checkbox" labelStyleClass="checkbox-label" name="rememberme" value="val1"
-                  label="Remember Me">
+                <p-checkbox styleClass="custom-checkbox" labelStyleClass="checkbox-label" name="rememberme"
+                  [(ngModel)]="checked" [ngModelOptions]="{standalone: true}" binary="true" label="Remember Me">
                 </p-checkbox>
               </div>
               <div class="forget-password"><a href="#" class="no-style-link font-medium"

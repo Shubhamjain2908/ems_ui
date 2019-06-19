@@ -35,27 +35,27 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  f() {
-    console.log(" ==> ", this.registerForm.controls['password'].hasError('minlength'));
-  }
-
   onSubmit() {
     const data = this.registerForm.value;
-    this._httpService.signupUser(data).subscribe(
-      (result: any) => {
-        if (result.error) {
-          alert(result.error);
-        } else {
-          this.cookieService.put('User', JSON.stringify(result));
-          this.registerForm.reset();
-          this._router.navigate(['/dashboard']);
+    if (!this.checked) {
+      alert('Please accept the terms & conditions');
+    } else {
+      this._httpService.signupUser(data).subscribe(
+        (result: any) => {
+          if (result.error) {
+            alert(result.error);
+          } else {
+            this.cookieService.put('User', JSON.stringify(result));
+            this.registerForm.reset();
+            this._router.navigate(['/dashboard']);
+          }
+        },
+        (err: any) => {
+          this._router.navigate(['/auth/login']);
+          console.error(err);
         }
-      },
-      (err: any) => {
-        this._router.navigate(['/auth/login']);
-        console.error(err);
-      }
-    );
+      );
+    }
   }
 
 }
