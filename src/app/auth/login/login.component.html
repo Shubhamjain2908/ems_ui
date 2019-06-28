@@ -13,11 +13,11 @@
           <!-- Login Form Start -->
           <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form custom-form">
 
-            <input type="text" placeholder="Email or Username or mobile no" formControlName="id">
+            <input type="text" placeholder="Email" formControlName="email">
             <div
-              *ngIf="loginForm.controls['id'].hasError('required') && (loginForm.controls['id'].dirty || loginForm.controls['id'].touched)"
+              *ngIf="loginForm.controls['email'].hasError('required') && (loginForm.controls['email'].dirty || loginForm.controls['email'].touched)"
               class="error">
-              Please enter email or Username or Mobile no.
+              Please enter an email to login.
             </div>
 
             <input type="password" placeholder="Password" formControlName="password">

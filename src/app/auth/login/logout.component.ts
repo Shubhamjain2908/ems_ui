@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../../services/auth.service';
 
 
 @Component({
@@ -15,17 +15,15 @@ export class LogoutComponent implements OnInit {
     private _service: CookieService,
     private _router: Router
   ) { }
+
   ngOnInit() {
-    this._httpService.logout();
-    // this._httpService.logout().subscribe((result: any) => {
-    //   this._service.remove('User');
-    //   this._service.remove('email');
-    //   this._router.navigate(['/login']);
-    // }, (err: any) => {
-    //   this._service.remove('User');
-    //   this._service.remove('email');
-    //   this._router.navigate(['/login']);
-    // });
+    this._httpService.logout().subscribe((result: any) => {
+      this._service.remove('User');
+      this._router.navigate(['/auth/login']);
+    }, (err: any) => {
+      this._service.remove('User');
+      this._router.navigate(['/auth/login']);
+    });
   }
 
 }

@@ -11,8 +11,9 @@ import { ContentLayoutComponent } from './layouts/content/content-layout.compone
 import { FullLayoutComponent } from './layouts/full/full-layout.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CookieService, CookieModule } from 'ngx-cookie';
-import { AuthService } from './auth/auth.service';
+import { AuthService } from './services/auth.service';
 import { AuthGuard } from './auth/auth-guard.service';
+import { BaseService } from './services/base.service';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { AuthGuard } from './auth/auth-guard.service';
   providers: [
     AuthService,
     AuthGuard,
-    CookieService
+    CookieService,
+    BaseService
   ],
   bootstrap: [AppComponent]
 })

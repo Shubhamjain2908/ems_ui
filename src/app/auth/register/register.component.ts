@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { noWhitespaceValidator, minMaxValidator } from 'app/utils/custom-validators';
-import { AuthService } from '../auth.service';
+import { noWhitespaceValidator } from 'app/utils/custom-validators';
+import { AuthService } from '../../services/auth.service';
 import { CookieService } from 'ngx-cookie';
 import { Router } from '@angular/router';
+import * as alertFunctions from './../../shared/data/sweet-alert';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +18,6 @@ export class RegisterComponent implements OnInit {
   public checked = false;
 
   registerForm = new FormGroup({
-    username: new FormControl('', [Validators.required, noWhitespaceValidator, Validators.pattern(/^[a-z0-9]+$/i)]),
     email: new FormControl('', [Validators.required, Validators.email]),
     mobile: new FormControl('', [Validators.required, noWhitespaceValidator, Validators.minLength(7), Validators.maxLength(10)]),
     address: new FormControl('', [Validators.required, noWhitespaceValidator, Validators.maxLength(30)]),
@@ -41,17 +41,17 @@ export class RegisterComponent implements OnInit {
   onSubmit() {
     const data = this.registerForm.value;
     if (!this.checked) {
-      alert('Please accept the terms & conditions');
+      alertFunctions.typeCustom('Error!', 'Please accept the terms & conditions', 'warning');
     } else {
       delete data.confirmpassword;
       this._httpService.signupUser(data).subscribe(
         (result: any) => {
-          if (result.error) {
-            alert(result.error);
-          } else {
-            this.cookieService.put('User', JSON.stringify(result));
+          if (result.body.success) {
+            this.cookieService.put('User', 'Bearer ' + result.headers.get('AuthToken'));
             this.registerForm.reset();
             this._router.navigate(['/dashboard']);
+          } else {
+            alertFunctions.typeCustom('Error!', result.body.message, 'error');
           }
         },
         (err: any) => {

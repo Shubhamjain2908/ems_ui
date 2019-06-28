@@ -27,16 +27,6 @@
               Please provide valid email id
             </div>
 
-            <input type="text" placeholder="User name" formControlName="username">
-            <div
-              *ngIf="registerForm.controls['username'].hasError('required')  && (registerForm.controls['username'].dirty || registerForm.controls['username'].touched)"
-              class="error">
-              Please enter a username
-            </div>
-            <div *ngIf="registerForm.controls['username'].hasError('pattern')" class="error">
-              Username must be an Alphanumeric value
-            </div>
-
             <input type="text" placeholder="Name" formControlName="name">
             <div
               *ngIf="registerForm.controls['name'].hasError('required')  && (registerForm.controls['name'].dirty || registerForm.controls['name'].touched)"

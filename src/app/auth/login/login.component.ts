@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { noWhitespaceValidator } from 'app/utils/custom-validators';
 import { Router } from '@angular/router';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../../services/auth.service';
 import { CookieService } from 'ngx-cookie';
+import * as alertFunctions from './../../shared/data/sweet-alert';
 
 @Component({
   selector: 'app-login',
@@ -12,11 +13,10 @@ import { CookieService } from 'ngx-cookie';
 })
 export class LoginComponent implements OnInit {
 
-  public error;
   public checked = true;
 
   loginForm = new FormGroup({
-    id: new FormControl('', [Validators.required, noWhitespaceValidator]),
+    email: new FormControl('', [Validators.required, noWhitespaceValidator]),
     password: new FormControl('', [Validators.required, noWhitespaceValidator]),
   });
 
@@ -27,45 +27,33 @@ export class LoginComponent implements OnInit {
       this._router.navigate(['/dashboard']);
     }
     if (localStorage.getItem('rememberme') === 'true') {
-      this.loginForm.controls['id'].setValue(localStorage.getItem('id'));
+      this.loginForm.controls['email'].setValue(localStorage.getItem('email'));
       this.loginForm.controls['password'].setValue(localStorage.getItem('password'));
     }
   }
 
   onSubmit() {
-    localStorage.removeItem('id');
+    localStorage.removeItem('email');
     localStorage.removeItem('password');
     localStorage.removeItem('rememberme');
     const data = this.loginForm.value;
-    const id = data.id;
-    if (this.isEmail(id)) {
-      data.type = 'email';
-    } else if (!isNaN(id)) {
-      data.type = 'mobile';
-    } else if (id.match(/^[a-z0-9]+$/i)) {
-      data.type = 'username';
-    } else {
-      alert('Enter a valid id');
-      return;
-    }
     this._httpService.signinUser(data).subscribe(
       (result: any) => {
-        if (result.error) {
-          alert(result.error);
-        } else {
-          this.cookieService.put('User', JSON.stringify(result));
+        if (result.body.success) {
+          this.cookieService.put('User', 'Bearer ' + result.headers.get('AuthToken'));
           if (this.checked) {
-            localStorage.setItem('id', id);
+            localStorage.setItem('email', data.email);
             localStorage.setItem('password', data.password);
             localStorage.setItem('rememberme', 'true');
           }
           this.loginForm.reset();
           this._router.navigate(['/dashboard']);
+        } else {
+          alertFunctions.typeCustom('Error!', result.body.message, 'error');
         }
       },
       (err: any) => {
         this._router.navigate(['/auth/login']);
-        console.error(err);
       }
     );
   }

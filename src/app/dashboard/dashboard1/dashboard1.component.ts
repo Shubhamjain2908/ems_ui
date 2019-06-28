@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'app/auth/auth.service';
+import { AuthService } from 'app/services/auth.service';
 import { Router } from '@angular/router';
 
 declare var require: any;
@@ -24,20 +24,20 @@ export class Dashboard1Component implements OnInit {
   listing() {
     this.noRecordErr = false;
     this.data = [];
-    this._httpService.getUsers().subscribe(
-      (result: any) => {
-        if (result.length > 0) {
-          this.data = result;
-        } else {
-          this.noRecordErr = true;
-        }
-      },
-      (err: any) => {
-        console.error(err);
-        this._router.navigate(['/auth/logout']);
-      },
-      () => console.log()
-    );
+    // this._httpService.getUsers().subscribe(
+    //   (result: any) => {
+    //     if (result.length > 0) {
+    //       this.data = result;
+    //     } else {
+    //       this.noRecordErr = true;
+    //     }
+    //   },
+    //   (err: any) => {
+    //     console.error(err);
+    //     this._router.navigate(['/auth/logout']);
+    //   },
+    //   () => console.log()
+    // );
   }
 
 }
