@@ -1,0 +1,167 @@
+<div class="row text-left">
+  <div class="col-12">
+    <div class="content-header">2nd Category</div>
+    <p class="content-sub-header">2nd Categories Listing</p>
+  </div>
+</div>
+
+<!--Advanced filter Starts-->
+<section id="advanced">
+  <div class="row text-left" matchHeight="card">
+    <div class="col-sm-12">
+      <div class="card fixedHeight">
+        <div class="card-header">
+          <h4 class="card-title">2nd Categories Listing</h4>
+          <button class="btn btn-primary btn-raised pull-right" (click)="open(content)"><i
+              class="ft-plus font-medium-3 mr-2"></i>Add 2nd category</button>
+        </div>
+        <div class="card-body">
+          <div class="card-block">
+            <!-- <input #search class="search mb-2" type="text" placeholder="Search..." (keydown.enter)="onSearch(search.value)"> -->
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Subcategory Name</th>
+                  <th>Category Name</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody class="{{table_loader_class}}">
+                <tr *ngFor="let key of data;let i = index">
+                  <th scope="row">{{ i - 9 + page*10 }}</th>
+                  <td>{{ key.name }}</td>
+                  <td>{{ key.parent.name }}</td>
+                  <td>
+                    <a class="success p-0" data-original-title="" title=""
+                      (click)="openUpdCategory(updateCategoryContent,key)">
+                      <i class="ft-edit-2 font-medium-3 mr-2"></i>
+                    </a>
+                    <a class="danger p-0" data-original-title="" title="" (click)="confirmTextCategory(key)">
+                      <i class="ft-x font-medium-3 mr-2"></i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+          <div class="pagination-custom">
+            <button [disabled]="page == 1" (click)="change_page(page, 0)"
+              class="btn btn-success btn-raised">Previous</button>
+            <button [disabled]="disable_next" (click)="change_page(page, 1)"
+              class="btn btn-success btn-raised">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!--Advanced filter Ends-->
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <form [formGroup]="addCategoryForm" (ngSubmit)="onAddCategory()">
+    <div class="modal-header">
+      <h4 class="modal-title">Add 2nd category</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="projectinput1">1st Category</label>
+        <div class="input-group">
+          <select name="first" class="form-control" formControlName="category_id" aria-describedby="basic-addon3">
+            <option value="">
+              ---Select 1st Category---
+            </option>
+            <option *ngFor="let o of cId" value="{{o.id}}">
+              {{o.category_name}}
+            </option>
+          </select>
+        </div>
+        <label for="projectinput1">2nd Category Name</label>
+        <div class="input-group">
+          <input type="text" class="form-control" formControlName="subcategory_name" placeholder="2nd category name"
+            aria-describedby="basic-addon3">
+        </div>
+        <label for="projectinput1">Image</label>
+        <div class="input-group">
+          <input type="file" id="inputFile" class="form-control" placeholder="image" aria-describedby="basic-addon3"
+            (change)="fileChangeEvent($event)">
+        </div>
+        <!-- <label for="projectinput1">Library</label>
+      <div class="input-group">
+          <select  name="first" class="form-control" formControlName="library"  aria-describedby="basic-addon3" [value]="false">
+              <option value="">Select</option>
+              <option value="true">True</option>
+              <option value="false">False</option>
+          </select>
+      </div> -->
+      </div>
+      <!-- <div class="form-group">
+      <label for="projectinput1">Added By</label>
+      <div class="input-group">
+        <input type="text" class="form-control" formControlName="category"  placeholder="Category"
+          aria-describedby="basic-addon3">
+      </div>
+    </div> -->
+    </div>
+    <div class="modal-footer">
+      <button type="submit" [disabled]="!addCategoryForm.valid || file == null" class="btn btn-primary btn-raised">
+        <i class="fa fa-check-square-o"></i>Save</button>
+      <button type="button" #close class="btn btn-secondary btn-raised" (click)="c('Close click')">Close</button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #updateCategoryContent let-c="close" let-d="dismiss">
+  <form [formGroup]="updateCategoryForm" (ngSubmit)="onUpdateCategory()">
+    <div class="modal-header">
+      <h4 class="modal-title">Update 2nd Category</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="projectinput1">1st Category Name</label>
+        <div class="input-group">
+          <select name="first" class="form-control" formControlName="category_id" aria-describedby="basic-addon3"
+            [value]="selected">
+            <option value="">
+              ---Select 1st Category---
+            </option>
+            <option *ngFor="let o of cId" value="{{o.id}}">
+              {{o.category_name}}
+            </option>
+          </select>
+        </div>
+        <label for="projectinput1">2nd category Name</label>
+        <div class="input-group">
+          <input type="text" class="form-control" formControlName="subcategory_name"
+            ngModel="{{category.subcategory_name}}" placeholder="sub category" aria-describedby="basic-addon3">
+        </div>
+        <label for="projectinput1">Image</label>
+        <div class="input-group">
+          <input type="file" id="inputFile" class="form-control" placeholder="image" aria-describedby="basic-addon3"
+            (change)="fileChangeEvent($event)">
+        </div>
+        <!-- <label for="projectinput1">Library</label>
+      <div class="input-group">
+          <select  name="first" class="form-control" formControlName="library" [value]="category.library"  aria-describedby="basic-addon3">
+              <option value="">Select</option>
+              <option value="true">True</option>
+              <option value="false">False</option>
+          </select>
+      </div> -->
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" [disabled]="!updateCategoryForm.valid" class="btn btn-primary btn-raised">
+        <i class="fa fa-check-square-o"></i>Save</button>
+      <button type="button" #close class="btn btn-secondary btn-raised" (click)="c('Close click')">Close</button>
+    </div>
+  </form>
+</ng-template>

@@ -8,5 +8,10 @@ export const Full_ROUTES: Routes = [
     path: 'dashboard',
     loadChildren: './dashboard/dashboard.module#DashboardModule',
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'category',
+    loadChildren: './category/category.module#CategoryModule',
+    canActivate: [AuthGuard]
   }
 ];

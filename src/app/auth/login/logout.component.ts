@@ -9,7 +9,7 @@ import { AuthService } from '../../services/auth.service';
   template: ''
 })
 export class LogoutComponent implements OnInit {
-  posts: any;
+
   constructor(
     private _httpService: AuthService,
     private _service: CookieService,
