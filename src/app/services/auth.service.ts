@@ -18,8 +18,6 @@ export class AuthService {
   }
 
   logout() {
-    this.cookieService.remove('User');
-    this.router.navigate(['/auth/login']);
     return this.http.delete('logout');
   }
 
