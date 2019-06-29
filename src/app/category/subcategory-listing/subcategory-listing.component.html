@@ -24,6 +24,7 @@
                   <th>#</th>
                   <th>Subcategory Name</th>
                   <th>Category Name</th>
+                  <th>Created At</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -32,6 +33,7 @@
                   <th scope="row">{{ i - 9 + page*10 }}</th>
                   <td>{{ key.name }}</td>
                   <td>{{ key.parent.name }}</td>
+                  <td>{{ key.created_at | date: 'MMM d, y hh:mm:ss z' }}</td>
                   <td>
                     <a class="success p-0" data-original-title="" title=""
                       (click)="openUpdCategory(updateCategoryContent,key)">

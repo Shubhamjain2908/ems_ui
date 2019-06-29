@@ -1,7 +1,6 @@
 <div class="row text-left">
   <div class="col-12">
-    <div class="content-header">2nd Expense</div>
-    <p class="content-sub-header">2nd Categories Listing</p>
+    <div class="content-header">Expense</div>
   </div>
 </div>
 
@@ -11,9 +10,9 @@
     <div class="col-sm-12">
       <div class="card fixedHeight">
         <div class="card-header">
-          <h4 class="card-title">2nd Categories Listing</h4>
+          <h4 class="card-title">Expense Listing</h4>
           <button class="btn btn-primary btn-raised pull-right" (click)="open(content)"><i
-              class="ft-plus font-medium-3 mr-2"></i>Add 2nd expense</button>
+              class="ft-plus font-medium-3 mr-2"></i>Expense</button>
         </div>
         <div class="card-body">
           <div class="card-block">
@@ -22,16 +21,20 @@
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Subexpense Name</th>
-                  <th>Expense Name</th>
+                  <th>Category</th>
+                  <th>Item Name</th>
+                  <th>Amount</th>
+                  <th>Expense Date</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody class="{{table_loader_class}}">
                 <tr *ngFor="let key of data;let i = index">
                   <th scope="row">{{ i - 9 + page*10 }}</th>
-                  <td>{{ key.name }}</td>
-                  <td>{{ key.parent.name }}</td>
+                  <td>{{ key.category.parent.name }}</td>
+                  <td>{{ key.category.name }}</td>
+                  <td>{{ key.expense }}</td>
+                  <td>{{ key.created_at | date: 'MMM d, y hh:mm:ss z' }}</td>
                   <td>
                     <a class="success p-0" data-original-title="" title=""
                       (click)="openUpdExpense(updateExpenseContent,key)">

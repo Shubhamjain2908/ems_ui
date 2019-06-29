@@ -28,7 +28,6 @@ export class ExpenseComponent implements OnInit {
   expense: any;
   selected = 'any';
   cId: any;
-  file: any = null;
 
   page = 1;
   currentPage = 0;
@@ -135,7 +134,6 @@ export class ExpenseComponent implements OnInit {
   openUpdExpense(content, expense) {
     this.selected = expense.parent.id;
     this.expense = expense;
-    this.file = null;
     this.updateExpenseForm.controls['parentId'].setValue(this.selected);
     this.modalReference = this.modalService.open(content);
     this.modalReference.result.then((result) => {
@@ -146,7 +144,6 @@ export class ExpenseComponent implements OnInit {
   }
 
   open(content) {
-    this.file = null;
     this.modalReference = this.modalService.open(content);
     this.modalReference.result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
