@@ -1,7 +1,7 @@
 <div class="row text-left">
   <div class="col-12">
-    <div class="content-header">2nd Category</div>
-    <p class="content-sub-header">2nd Categories Listing</p>
+    <div class="content-header">Subcategories</div>
+    <p class="content-sub-header">Subategories Listing</p>
   </div>
 </div>
 
@@ -11,9 +11,9 @@
     <div class="col-sm-12">
       <div class="card fixedHeight">
         <div class="card-header">
-          <h4 class="card-title">2nd Categories Listing</h4>
+          <h4 class="card-title">SubCategories Listing</h4>
           <button class="btn btn-primary btn-raised pull-right" (click)="open(content)"><i
-              class="ft-plus font-medium-3 mr-2"></i>Add 2nd category</button>
+              class="ft-plus font-medium-3 mr-2"></i>Add subcategory</button>
         </div>
         <div class="card-body">
           <div class="card-block">
@@ -92,7 +92,7 @@
         </div>
         <label for="projectinput1">Subcategory Name</label>
         <div class="input-group">
-          <input type="text" class="form-control" formControlName="name" placeholder="2nd category name"
+          <input type="text" class="form-control" formControlName="name" placeholder="subcategory name"
             aria-describedby="basic-addon3">
         </div>
       </div>
@@ -115,7 +115,7 @@
     </div>
     <div class="modal-body">
       <div class="form-group">
-        <label for="projectinput1">1st Category Name</label>
+        <label for="projectinput1">Category Name</label>
         <div class="input-group">
           <select name="first" class="form-control" formControlName="parentId" aria-describedby="basic-addon3"
             [value]="selected">
@@ -130,7 +130,7 @@
         <label for="projectinput1">Subcategory Name</label>
         <div class="input-group">
           <input type="text" class="form-control" formControlName="name" ngModel="{{category.name}}"
-            placeholder="sub category" aria-describedby="basic-addon3">
+            placeholder="subcategory name" aria-describedby="basic-addon3">
         </div>
       </div>
     </div>

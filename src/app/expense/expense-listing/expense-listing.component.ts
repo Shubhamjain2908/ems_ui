@@ -28,6 +28,7 @@ export class ExpenseComponent implements OnInit {
   expense: any;
   selected = 'any';
   cId: any;
+  subId: any;
 
   page = 1;
   currentPage = 0;
@@ -37,16 +38,19 @@ export class ExpenseComponent implements OnInit {
 
   addExpenseForm = new FormGroup({
     parentId: new FormControl('', [Validators.required]),
-    name: new FormControl('', [Validators.required, noWhitespaceValidator])
+    categoryId: new FormControl('', [Validators.required]),
+    expense: new FormControl('', [Validators.required, noWhitespaceValidator, Validators.pattern('^[0-9]*$')])
   });
 
   updateExpenseForm = new FormGroup({
     parentId: new FormControl('', [Validators.required]),
-    name: new FormControl('', [Validators.required, noWhitespaceValidator])
+    categoryId: new FormControl('', [Validators.required]),
+    expense: new FormControl('', [Validators.required, noWhitespaceValidator, Validators.pattern('^[0-9]*$')])
   });
 
   constructor(private modalService: NgbModal,
     private _httpService: ExpenseService,
+    private catService: CategoryService,
     private _router: Router) {
   }
 
@@ -97,27 +101,23 @@ export class ExpenseComponent implements OnInit {
 
   onAddExpense() {
     const data = this.addExpenseForm.value;
-    const b1 = this.data.some(obj => obj.parentId === +data.parentId);
-    const b2 = this.data.some(obj => obj.name === data.name);
-    if (b1 && b2) {
-      alertFunctions.typeCustom('Error!', 'Expense already present!', 'warning');
-    } else {
-      this._httpService.add(data)
-        .subscribe((result: any) => {
-          if (result.success === true) {
-            this.modalReference.close();
-            alertFunctions.typeCustom('Great!', 'Expense added!', 'success');
-            this.addExpenseForm.reset();
-            this.listing();
-          }
-        }, (err: any) => {
-          this.errorHandle(err);
-        }, () => console.log());
-    }
+    this._httpService.add(data)
+      .subscribe((result: any) => {
+        if (result.success === true) {
+          this.modalReference.close();
+          alertFunctions.typeCustom('Great!', 'Expense added!', 'success');
+          this.addExpenseForm.reset();
+          this.listing();
+        }
+      }, (err: any) => {
+        this.errorHandle(err);
+      }, () => console.log());
   }
+
 
   onUpdateExpense() {
     const data = this.updateExpenseForm.value;
+    delete data.parentId;
     this._httpService.update(data, this.expense.id)
       .subscribe((result: any) => {
         if (result.success === true) {
@@ -132,9 +132,11 @@ export class ExpenseComponent implements OnInit {
   }
 
   openUpdExpense(content, expense) {
-    this.selected = expense.parent.id;
+    this.getSubCatId(expense.category.parentId);
     this.expense = expense;
-    this.updateExpenseForm.controls['parentId'].setValue(this.selected);
+    this.updateExpenseForm.controls['parentId'].setValue(expense.category.parentId);
+    this.updateExpenseForm.controls['categoryId'].setValue(expense.categoryId);
+    this.updateExpenseForm.controls['expense'].setValue(expense.expense);
     this.modalReference = this.modalService.open(content);
     this.modalReference.result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
@@ -186,7 +188,7 @@ export class ExpenseComponent implements OnInit {
   deleteExpense(data) {
     this._httpService.delete(data.id)
       .subscribe((result: any) => {
-        alertFunctions.typeCustom('Great!', 'Sub-Expense Deleted!', 'success');
+        alertFunctions.typeCustom('Great!', 'Expense Deleted!', 'success');
         this.data.splice(this.data.indexOf(data), 1);
       }, (err: any) => {
         this.errorHandle(err);
@@ -203,7 +205,7 @@ export class ExpenseComponent implements OnInit {
       alertFunctions.typeCustom('Server Error!', 'Internal Server Error', 'error');
     } else if (err.status === 422) {
       alertFunctions.typeCustom('Validation Error!', err.error.message, 'error');
-    } else if (err.status === 405) {
+    } else if (err.status === 406) {
       alertFunctions.typeCustom('Not Allowed!', err.error.message, 'error');
     } else if (err.status === 401) {
       this._router.navigate(['/logout']);
@@ -212,12 +214,23 @@ export class ExpenseComponent implements OnInit {
   }
 
   getCatId() {
-    this._httpService.listing({ page: 1, limit: Number.MAX_SAFE_INTEGER })
+    this.cId = [];
+    this.catService.listing({ page: 1, limit: Number.MAX_SAFE_INTEGER })
       .subscribe((result: any) => {
         if (result.success === true) {
-          if (result.data.length > 0) {
-            this.cId = result.data;
-          }
+          this.cId = result.data;
+        }
+      }, (err: any) => {
+        this.errorHandle(err);
+      }, () => console.log());
+  }
+
+  getSubCatId(id) {
+    this.subId = [];
+    this.catService.getOneCategory(id)
+      .subscribe((result: any) => {
+        if (result.success === true) {
+          this.subId = result.data;
         }
       }, (err: any) => {
         this.errorHandle(err);

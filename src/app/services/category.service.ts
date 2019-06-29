@@ -16,7 +16,7 @@ export class CategoryService {
   }
 
   getOneCategory(id): Observable<any> {
-    return this.http.get('category/' + id);
+    return this.http.get('subcategory/' + id);
   }
 
   add(data) {
