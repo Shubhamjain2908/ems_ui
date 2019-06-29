@@ -205,7 +205,7 @@ export class SubCategoryComponent implements OnInit {
       alertFunctions.typeCustom('Server Error!', 'Internal Server Error', 'error');
     } else if (err.status === 422) {
       alertFunctions.typeCustom('Validation Error!', err.error.message, 'error');
-    } else if (err.status === 405) {
+    } else if (err.status === 406) {
       alertFunctions.typeCustom('Not Allowed!', err.error.message, 'error');
     } else if (err.status === 401) {
       this._router.navigate(['/logout']);
