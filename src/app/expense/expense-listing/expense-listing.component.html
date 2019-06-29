@@ -45,6 +45,13 @@
                     </a>
                   </td>
                 </tr>
+                <tr *ngIf="noRecordErr">
+                  <td colspan="7">
+                    <div class="emty-container">
+                      <p> No Data Found</p>
+                    </div>
+                  </td>
+                </tr>
               </tbody>
             </table>
 
