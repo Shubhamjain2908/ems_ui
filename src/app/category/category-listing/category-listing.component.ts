@@ -183,10 +183,8 @@ export class CategoryComponent implements OnInit {
   deleteCategory(data) {
     this._httpService.delete(data.id)
       .subscribe((result: any) => {
-        if (result.success === true) {
-          alertFunctions.typeCustom('Great!', 'Category Deleted!', 'success');
-          this.data.splice(this.data.indexOf(data), 1);
-        }
+        alertFunctions.typeCustom('Great!', 'Category Deleted!', 'success');
+        this.data.splice(this.data.indexOf(data), 1);
       }, (err: any) => {
         this.errorHandle(err);
       }, () => console.log());

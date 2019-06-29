@@ -35,16 +35,15 @@ export class SubCategoryComponent implements OnInit {
     page: 1
   };
   addCategoryForm = new FormGroup({
-    category_id: new FormControl('', [Validators.required]),
-    subcategory_name: new FormControl('', [Validators.required, noWhitespaceValidator])
+    parentId: new FormControl('', [Validators.required]),
+    name: new FormControl('', [Validators.required, noWhitespaceValidator])
   });
 
   updateCategoryForm = new FormGroup({
-    category_id: new FormControl('', [Validators.required]),
-    subcategory_name: new FormControl('', [Validators.required, noWhitespaceValidator])
+    parentId: new FormControl('', [Validators.required]),
+    name: new FormControl('', [Validators.required, noWhitespaceValidator])
   });
 
-  // tslint:disable-next-line:max-line-length
   constructor(private modalService: NgbModal,
     private _httpService: CategoryService,
     private _router: Router) {
@@ -61,6 +60,7 @@ export class SubCategoryComponent implements OnInit {
     this.noRecordErr = false;
     this._httpService.getSubCategory(this.payload)
       .subscribe((result: any) => {
+        console.log(result);
         if (result.success === true) {
           this.table_loader_class = '';
           if (result.data.length > 0) {
@@ -108,9 +108,8 @@ export class SubCategoryComponent implements OnInit {
           if (result.success === true) {
             this.modalReference.close();
             alertFunctions.typeCustom('Great!', 'Subcategory added!', 'success');
-            data.created_at = new Date();
-            this.data.unshift(data);
             this.addCategoryForm.reset();
+            this.listing();
           }
         }, (err: any) => {
           this.errorHandle(err);
@@ -135,11 +134,10 @@ export class SubCategoryComponent implements OnInit {
   }
 
   openUpdCategory(content, category) {
-    this.selected = category.Category.id;
+    this.selected = category.parent.id;
     this.category = category;
     this.file = null;
-    this.updateCategoryForm.controls['category_id'].setValue(this.selected);
-    // console.log(this.category.Category.category);
+    this.updateCategoryForm.controls['parentId'].setValue(this.selected);
     this.modalReference = this.modalService.open(content);
     this.modalReference.result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
@@ -192,10 +190,8 @@ export class SubCategoryComponent implements OnInit {
   deleteCategory(data) {
     this._httpService.delete(data.id)
       .subscribe((result: any) => {
-        if (result.success === true) {
-          alertFunctions.typeCustom('Great!', 'Sub-Category Deleted!', 'success');
-          this.data.splice(this.data.indexOf(data), 1);
-        }
+        alertFunctions.typeCustom('Great!', 'Sub-Category Deleted!', 'success');
+        this.data.splice(this.data.indexOf(data), 1);
       }, (err: any) => {
         this.errorHandle(err);
       }, () => console.log());

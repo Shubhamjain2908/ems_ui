@@ -27,7 +27,7 @@ export class CategoryService {
     return this.http.post('subcategory', data);
   }
 
-  update(id, data) {
+  update(data, id) {
     return this.http.put('category/ ' + id, data);
   }
 
