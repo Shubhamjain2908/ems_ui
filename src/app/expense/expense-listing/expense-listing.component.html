@@ -25,6 +25,7 @@
                   <th>Item Name</th>
                   <th>Amount</th>
                   <th>Expense Date</th>
+                  <th>Is Deleted</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -35,6 +36,10 @@
                   <td>{{ key.category.name }}</td>
                   <td>{{ key.expense }}</td>
                   <td>{{ key.created_at | date: 'MMM d, y hh:mm:ss z' }}</td>
+                  <td>
+                    <p-triStateCheckbox [(ngModel)]="key.isDeleted" [disabled]="true">
+                    </p-triStateCheckbox>
+                  </td>
                   <td>
                     <a class="success p-0" data-original-title="" title=""
                       (click)="openUpdExpense(updateExpenseContent,key)">
@@ -56,12 +61,12 @@
             </table>
 
           </div>
-          <!-- <div class="pagination-custom">
+          <div class="pagination-custom pull-right">
             <button [disabled]="page == 1" (click)="change_page(page, 0)"
               class="btn btn-success btn-raised">Previous</button>
             <button [disabled]="disable_next" (click)="change_page(page, 1)"
               class="btn btn-success btn-raised">Next</button>
-          </div> -->
+          </div>
         </div>
       </div>
     </div>

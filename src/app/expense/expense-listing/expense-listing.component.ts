@@ -189,7 +189,11 @@ export class ExpenseComponent implements OnInit {
     this._httpService.delete(data.id)
       .subscribe((result: any) => {
         alertFunctions.typeCustom('Great!', 'Expense Deleted!', 'success');
-        this.data.splice(this.data.indexOf(data), 1);
+        this.data.map(a => {
+          if (+a.id === +data.id) {
+            a.isDeleted = true;
+          }
+        });
       }, (err: any) => {
         this.errorHandle(err);
       }, () => console.log());
