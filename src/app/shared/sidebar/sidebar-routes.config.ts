@@ -42,4 +42,14 @@ export const ROUTES: RouteInfo[] = [
       },
     ]
   },
+  {
+    path: '/expense',
+    title: 'Expense',
+    icon: 'fa fa-money',
+    class: '',
+    badge: '',
+    badgeClass: 'badge badge-pill badge-danger float-right mr-1 mt-1',
+    isExternalLink: false,
+    submenu: []
+  },
 ];

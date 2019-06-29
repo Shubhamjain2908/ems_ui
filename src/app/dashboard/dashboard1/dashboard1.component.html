@@ -1,57 +1,124 @@
-<div class="row text-left">
-  <div class="col-12">
-    <div class="content-header">User</div>
-  </div>
-</div>
+<div class="row">
 
-<!--Advanced filter Starts-->
-<section id="advanced">
-  <div class="row text-left" matchHeight="card">
-    <div class="col-sm-12">
-      <div class="card fixedHeight">
-        <div class="card-header flex-wrapper">
-          <h4 class="card-title">Users Listing</h4>
-        </div>
-        <div class="card-body">
-          <div class="card-block">
-            <div *ngIf="data.length === 0" class="emty-container">
-              <p> No Data Found</p>
+  <div class="col-xl-3 col-lg-6 col-md-6 col-12">
+    <div class="card bg-primary">
+      <div class="card-body">
+        <div class="card-block pt-2 pb-0">
+          <div class="media">
+            <div class="media-body white text-left">
+              <h3 class="font-large-1 mb-0">${{ data.totalBudget }}</h3>
+              <span>Total Budget</span>
             </div>
-            <div *ngIf="data.length != 0">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>User Name</th>
-                    <th>Email</th>
-                    <th>Mobile</th>
-                    <th>Address</th>
-                  </tr>
-                </thead>
-                <tbody class="{{table_loader_class}}">
-                  <tr *ngFor="let key of data;let i = index">
-                    <th scope="row">{{ i + 1 }}</th>
-                    <td>{{ key.name }}</td>
-                    <td>{{ key.username }}</td>
-                    <td>{{ key.email }}</td>
-                    <td>{{ key.mobile }}</td>
-                    <td>{{ key.address }}</td>
-                  </tr>
-                  <tr *ngIf="noRecordErr">
-                    <td colspan="7">
-                      <div class="emty-container">
-                        <p> No Data Found</p>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="media-right white text-right">
+              <i class="icon-bulb font-large-1"></i>
             </div>
           </div>
+        </div>
+        <div id="Widget-line-chart" class="height-75 WidgetlineChart WidgetlineChartShadow mb-3">
         </div>
       </div>
     </div>
   </div>
-</section>
-<!--Advanced filter Ends-->
+
+  <div class="col-xl-3 col-lg-6 col-md-6 col-12">
+    <div class="card bg-warning">
+      <div class="card-body">
+        <div class="card-block pt-2 pb-0">
+          <div class="media">
+            <div class="media-body white text-left">
+              <h3 class="font-large-1 mb-0">${{ data.usedBudget }}</h3>
+              <span>Total Expense Made</span>
+            </div>
+            <div class="media-right white text-right">
+              <i class="icon-pie-chart font-large-1"></i>
+            </div>
+          </div>
+        </div>
+        <div id="Widget-line-chart2" class="height-75 WidgetlineChart WidgetlineChartShadow mb-3">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-lg-6 col-md-6 col-12">
+    <div class="card bg-primary">
+      <div class="card-body">
+        <div class="card-block pt-2 pb-0">
+          <div class="media">
+            <div class="media-body white text-left">
+              <h3 class="font-large-1 mb-0">${{ data.budgetLeft }}</h3>
+              <span>Total Budget Left</span>
+            </div>
+            <div class="media-right white text-right">
+              <i class="icon-bulb font-large-1"></i>
+            </div>
+          </div>
+        </div>
+        <div id="Widget-line-chart" class="height-75 WidgetlineChart WidgetlineChartShadow mb-3">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-lg-6 col-md-6 col-12">
+    <div class="card bg-success">
+      <div class="card-body">
+        <div class="card-block pt-2 pb-0">
+          <div class="media">
+            <div class="media-body white text-left">
+              <h3 class="font-large-1 mb-0">{{ data.totalCategory }}</h3>
+              <span>Total Category</span>
+            </div>
+            <div class="media-right white text-right">
+              <i class="icon-graph font-large-1"></i>
+            </div>
+          </div>
+        </div>
+        <div id="Widget-line-chart2" class="height-75 WidgetlineChart WidgetlineChartShadow mb-3">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-lg-6 col-md-6 col-12">
+    <div class="card bg-danger">
+      <div class="card-body">
+        <div class="card-block pt-2 pb-0">
+          <div class="media">
+            <div class="media-body white text-left">
+              <h3 class="font-large-1 mb-0">{{ data.budgetUsed_percentage }}%</h3>
+              <span>Budget Used %</span>
+            </div>
+            <div class="media-right white text-right">
+              <i class="icon-wallet font-large-1"></i>
+            </div>
+          </div>
+        </div>
+        <div id="Widget-line-chart2" class="height-75 WidgetlineChart WidgetlineChartShadow mb-3">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-lg-6 col-md-6 col-12">
+    <div class="card bg-danger">
+      <div class="card-body">
+        <div class="card-block pt-2 pb-0">
+          <div class="media">
+            <div class="media-body white text-left">
+              <h3 class="font-large-1 mb-0">{{ data.budgetLeft_percentage }}%</h3>
+              <span>Budget Left %</span>
+            </div>
+            <div class="media-right white text-right">
+              <i class="icon-wallet font-large-1"></i>
+            </div>
+          </div>
+        </div>
+        <div id="Widget-line-chart2" class="height-75 WidgetlineChart WidgetlineChartShadow mb-3">
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- | number : '1.2-2' -->

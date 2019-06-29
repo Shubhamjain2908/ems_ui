@@ -4,18 +4,19 @@ import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-boo
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as alertFunctions from './../../shared/data/sweet-alert'
 import swal from 'sweetalert2';
-import { CategoryService } from 'app/services/category.service';
+import { ExpenseService } from 'app/services/expense.service';
 import { noWhitespaceValidator } from 'app/utils/custom-validators';
+import { CategoryService } from 'app/services/category.service';
 
 @Component({
-  selector: 'app-subcategory-listing',
-  templateUrl: './subcategory-listing.component.html',
-  styleUrls: ['./subcategory-listing.component.scss'],
-  providers: [CategoryService],
+  selector: 'app-expense-listing',
+  templateUrl: './expense-listing.component.html',
+  styleUrls: ['./expense-listing.component.scss'],
+  providers: [ExpenseService, CategoryService],
   encapsulation: ViewEncapsulation.None
 })
 
-export class SubCategoryComponent implements OnInit {
+export class ExpenseComponent implements OnInit {
   public data: any = [];
   noRecordErr = false;
   table_loader_class = 'table_loader';
@@ -24,7 +25,7 @@ export class SubCategoryComponent implements OnInit {
   disable_next = false;
   modalReference: NgbModalRef;
   closeResult: string;
-  category: any;
+  expense: any;
   selected = 'any';
   cId: any;
   file: any = null;
@@ -34,18 +35,19 @@ export class SubCategoryComponent implements OnInit {
   payload: Object = {
     page: 1
   };
-  addCategoryForm = new FormGroup({
+
+  addExpenseForm = new FormGroup({
     parentId: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required, noWhitespaceValidator])
   });
 
-  updateCategoryForm = new FormGroup({
+  updateExpenseForm = new FormGroup({
     parentId: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required, noWhitespaceValidator])
   });
 
   constructor(private modalService: NgbModal,
-    private _httpService: CategoryService,
+    private _httpService: ExpenseService,
     private _router: Router) {
   }
 
@@ -58,7 +60,7 @@ export class SubCategoryComponent implements OnInit {
     this.table_loader_class = 'table_loader';
     this.data = [];
     this.noRecordErr = false;
-    this._httpService.getSubCategory(this.payload)
+    this._httpService.listing(this.payload)
       .subscribe((result: any) => {
         if (result.success === true) {
           this.table_loader_class = '';
@@ -94,48 +96,47 @@ export class SubCategoryComponent implements OnInit {
     this.listing();
   }
 
-  onAddCategory() {
-    const data = this.addCategoryForm.value;
+  onAddExpense() {
+    const data = this.addExpenseForm.value;
     const b1 = this.data.some(obj => obj.parentId === +data.parentId);
     const b2 = this.data.some(obj => obj.name === data.name);
     if (b1 && b2) {
-      alertFunctions.typeCustom('Error!', 'Subcategory already present!', 'warning');
+      alertFunctions.typeCustom('Error!', 'Subexpense already present!', 'warning');
     } else {
       this._httpService.add(data)
         .subscribe((result: any) => {
           if (result.success === true) {
             this.modalReference.close();
-            alertFunctions.typeCustom('Great!', 'Subcategory added!', 'success');
-            this.addCategoryForm.reset();
+            alertFunctions.typeCustom('Great!', 'Subexpense added!', 'success');
+            this.addExpenseForm.reset();
             this.listing();
           }
         }, (err: any) => {
           this.errorHandle(err);
-          // console.log(err);
         }, () => console.log());
     }
   }
 
-  onUpdateCategory() {
-    const data = this.updateCategoryForm.value;
-    this._httpService.update(data, this.category.id)
+  onUpdateExpense() {
+    const data = this.updateExpenseForm.value;
+    this._httpService.update(data, this.expense.id)
       .subscribe((result: any) => {
         if (result.success === true) {
           this.modalReference.close();
-          alertFunctions.typeCustom('Great!', 'Subcategory updated!', 'success');
+          alertFunctions.typeCustom('Great!', 'Subexpense updated!', 'success');
           this.listing();
-          this.updateCategoryForm.reset();
+          this.updateExpenseForm.reset();
         }
       }, (err: any) => {
         this.errorHandle(err);
       }, () => console.log());
   }
 
-  openUpdCategory(content, category) {
-    this.selected = category.parent.id;
-    this.category = category;
+  openUpdExpense(content, expense) {
+    this.selected = expense.parent.id;
+    this.expense = expense;
     this.file = null;
-    this.updateCategoryForm.controls['parentId'].setValue(this.selected);
+    this.updateExpenseForm.controls['parentId'].setValue(this.selected);
     this.modalReference = this.modalService.open(content);
     this.modalReference.result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
@@ -164,7 +165,7 @@ export class SubCategoryComponent implements OnInit {
     }
   }
 
-  confirmTextCategory(data) {
+  confirmTextExpense(data) {
     const self = this;
     swal({
       title: 'Are you sure?',
@@ -180,15 +181,15 @@ export class SubCategoryComponent implements OnInit {
       buttonsStyling: false
     }).then(function (isConfirm) {
       if (typeof isConfirm.value !== 'undefined' && isConfirm.hasOwnProperty('value')) {
-        self.deleteCategory(data);
+        self.deleteExpense(data);
       }
     })
   }
 
-  deleteCategory(data) {
+  deleteExpense(data) {
     this._httpService.delete(data.id)
       .subscribe((result: any) => {
-        alertFunctions.typeCustom('Great!', 'Sub-Category Deleted!', 'success');
+        alertFunctions.typeCustom('Great!', 'Sub-Expense Deleted!', 'success');
         this.data.splice(this.data.indexOf(data), 1);
       }, (err: any) => {
         this.errorHandle(err);
