@@ -17,5 +17,10 @@ export const Full_ROUTES: Routes = [
     path: 'expense',
     loadChildren: './expense/expense.module#ExpenseModule',
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'profile',
+    loadChildren: './profile/profile.module#ProfileModule',
+    canActivate: [AuthGuard]
   }
 ];

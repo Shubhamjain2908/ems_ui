@@ -15,10 +15,6 @@ export class BudgetService {
     return this.http.post('budget', data);
   }
 
-  update(data, id) {
-    return this.http.put('budget/ ' + id, data);
-  }
-
   delete(id) {
     return this.http.delete('budget/' + id);
   }

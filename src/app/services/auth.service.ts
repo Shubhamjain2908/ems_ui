@@ -17,6 +17,14 @@ export class AuthService {
     return this.http.postDirectObserve('login', data);
   }
 
+  getUser(): Observable<any> {
+    return this.http.get('user');
+  }
+
+  updateUser(data): Observable<any> {
+    return this.http.put('user', data);
+  }
+
   logout() {
     return this.http.delete('logout');
   }

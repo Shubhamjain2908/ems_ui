@@ -100,13 +100,13 @@ export class ExpenseComponent implements OnInit {
     const b1 = this.data.some(obj => obj.parentId === +data.parentId);
     const b2 = this.data.some(obj => obj.name === data.name);
     if (b1 && b2) {
-      alertFunctions.typeCustom('Error!', 'Subexpense already present!', 'warning');
+      alertFunctions.typeCustom('Error!', 'Expense already present!', 'warning');
     } else {
       this._httpService.add(data)
         .subscribe((result: any) => {
           if (result.success === true) {
             this.modalReference.close();
-            alertFunctions.typeCustom('Great!', 'Subexpense added!', 'success');
+            alertFunctions.typeCustom('Great!', 'Expense added!', 'success');
             this.addExpenseForm.reset();
             this.listing();
           }
@@ -122,7 +122,7 @@ export class ExpenseComponent implements OnInit {
       .subscribe((result: any) => {
         if (result.success === true) {
           this.modalReference.close();
-          alertFunctions.typeCustom('Great!', 'Subexpense updated!', 'success');
+          alertFunctions.typeCustom('Great!', 'Expense updated!', 'success');
           this.listing();
           this.updateExpenseForm.reset();
         }
