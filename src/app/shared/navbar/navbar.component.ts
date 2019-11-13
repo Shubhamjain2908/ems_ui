@@ -8,11 +8,15 @@ import { TranslateService } from '@ngx-translate/core';
 })
 
 export class NavbarComponent implements AfterViewChecked {
+    currentLang = 'en';
     toggleClass = 'ft-maximize';
     placement = 'bottom-right'
     public isCollapsed = true;
 
-    constructor() { }
+    constructor(public translate: TranslateService) {
+        const browserLang: string = translate.getBrowserLang();
+        translate.use(browserLang.match(/en|es|pt|de/) ? browserLang : 'en');       
+    }
 
     ngAfterViewChecked() {
 
@@ -27,7 +31,12 @@ export class NavbarComponent implements AfterViewChecked {
         //     }
         // }, 3000);
 
+        
+    }
 
+
+    ChangeLanguage(language: string) {
+        this.translate.use(language);
     }
 
     ToggleClass() {
