@@ -1,0 +1,12 @@
+.image-relative-wrapper {
+  position:relative;
+}
+
+.close-icon {
+  content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 23px;
+  cursor: pointer;
+}

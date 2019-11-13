@@ -1,0 +1,116 @@
+<!--Advanced filter Starts-->
+<section id="advanced">
+  <div class="row text-left" matchHeight="card">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header no-padding-bottom">
+          <h4 class="card-title" *ngIf="!collectionId">Add Collection</h4>
+          <h4 class="card-title" *ngIf="collectionId">Edit Collection</h4>
+        </div>
+        <div class="px-3">
+          <div class="card-body">
+            <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label class="form-input-label">Name</label>
+                    <input type="text" class="form-control" placeholder="Name" formControlName="name">
+                    <small
+                      *ngIf="form.controls['name'].hasError('whitespace') && (form.controls['name'].dirty || form.controls['name'].touched)"
+                      class="text-danger" translate>
+                      Invalid value!
+                    </small>
+                    <small
+                      *ngIf="form.controls['name'].hasError('required') && (form.controls['name'].dirty || form.controls['name'].touched)"
+                      class="text-danger" translate>
+                      Collection name is required!
+                    </small>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label class="form-input-label">Image</label>
+                    <input type="file" class="form-control" accept="image/*" placeholder="Image"
+                      (change)="selectFile($event)">
+                    <div *ngIf='image'>
+                      <img style="width:100px;height:100px;object-fit:cover" src="{{image}}">
+                    </div>
+                    <small
+                      *ngIf="form.controls['imageUrl'].hasError('whitespace') && (form.controls['imageUrl'].dirty || form.controls['imageUrl'].touched)"
+                      class="text-danger" translate>
+                      Invalid value!
+                    </small>
+                    <small
+                      *ngIf="form.controls['imageUrl'].hasError('required') && (form.controls['imageUrl'].dirty || form.controls['imageUrl'].touched)"
+                      class="text-danger" translate>
+                      Collection image is required!
+                    </small>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <hr>
+                </div>
+              </div>
+            </form>
+            <form class="form" [formGroup]="filterForm">
+              <div class="row">
+                <div class="col-sm-12">
+                  <h6><strong>Filters</strong></h6>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-input-label">User</label>
+                    <p-dropdown [options]="users$ | async" filter="true" formControlName="user"
+                      [autoDisplayFirst]="false" optionLabel="name" placeholder="Select Supplier"
+                      filterBy="label,value.name,value.email">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <hr>
+                </div>
+              </div>
+            </form>
+            <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-input-label">Category</label>
+                    <tree-select name="simpleSelect" [items]="categories$ | async" childrenField="children" tree-select
+                      formControlName="category" placeholder="Category" textField="name">
+                    </tree-select>
+                    <small
+                      *ngIf="form.controls['category'].hasError('required') && (form.controls['category'].dirty || form.controls['category'].touched)"
+                      class="text-danger" translate>
+                      Category is required!
+                    </small>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label class="form-input-label">Products</label>
+                    <p-autoComplete [suggestions]="products$ | async" (completeMethod)="search($event)"
+                      formControlName="products" field="name" [multiple]="true" emptyMessage="No products found!"
+                      placeholder="Enter product name">
+                    </p-autoComplete>
+                    <!-- <small
+                          *ngIf="form.controls['name'].hasError('whitespace') && (form.controls['name'].dirty || form.controls['name'].touched)"
+                          class="text-danger" translate>
+                          Invalid value!
+                        </small> -->
+                  </div>
+                </div>
+                <div class="form-actions col-md-12">
+                  <button class="btn btn-raised btn-primary pull-right">
+                    <i class="fa fa-check-square-o"></i> Save
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Advanced filter Ends-->

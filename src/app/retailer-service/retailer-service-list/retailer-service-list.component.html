@@ -1,0 +1,57 @@
+<!--Advanced filter Starts-->
+<section id="advanced">
+  <div class="row text-left" matchHeight="card">
+    <div class="col-sm-12">
+      <div class="card fixedHeight">
+        <div class="card-header no-padding-bottom">
+          <h4 class="card-title">Service Listing</h4>
+          <button class="btn pull-right btn-raised" [routerLink]="['/service/add']"
+            routerLinkActive="router-link-active">Add Service</button>
+        </div>
+        <div class="card-body">
+          <!-- <form [formGroup]="form">
+            <div class="row">
+              <div class="col-md-3 mb-2">
+                <input class="form-control" type="text" placeholder="Search by Name..." formControlName="search">
+              </div>
+              <div class="col-md-1 mb-1">
+              </div>
+            </div>
+          </form> -->
+          <!-- <input #search class="search mb-2" type="text" placeholder="Search..."
+            (keydown.enter)="onSearch(search.value)"> -->
+          <table class="table table-striped" *ngIf="(services$ | async).length !== 0">
+            <thead>
+              <tr>
+                <th>S No.</th>
+                <th>Service Name</th>
+                <th>Created At</th>
+                <!-- <th>Published</th> -->
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let key of (services$ | async);let i = index">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{ key.service_name }}</td>
+                <td>{{ key.created_at | date }}</td>
+                <!-- <td>{{ key.is_published }}</td> -->
+                <td>
+                  <button class="btn btn-raised btn-primary" [routerLink]="['./', 'detail', key.id]"
+                    routerLinkActive="router-link-active">View Details</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <app-empty-state *ngIf="(services$ | async).length === 0" title="No services found!"></app-empty-state>
+          <div class="pagination-custom" *ngIf="(services$ | async).length !== 0">
+            <button [disabled]="page == 1" (click)="change_page(page - 1)"
+              class="btn btn-success btn-raised">Previous</button>
+            <button [disabled]="nextPage$ | async" (click)="change_page(page + 1)"
+              class="btn btn-success btn-raised">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

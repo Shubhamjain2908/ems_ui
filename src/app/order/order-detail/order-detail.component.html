@@ -1,0 +1,144 @@
+<div class="row" *ngIf="order">
+  <div class="col-12 col-md-8">
+    <div class="card">
+      <div class="card-header no-padding-bottom">
+        <div class="row">
+          <div class="col-8">
+            <h4 class="card-title">Order #{{ order.id }}</h4>
+            <h6>Token: {{ order.token }}</h6>
+          </div>
+        </div>
+      </div>
+      <div class="card-content">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12 col-md-4">
+              <span class="text-bold-500 primary">
+                Amount
+              </span>
+              <span class="d-block">
+                {{ order.amount }}
+              </span>
+            </div>
+            <div class="col-12 col-md-4">
+              <span class="text-bold-500 primary">
+                Status
+              </span>
+              <span class="d-block">
+                {{ order.status | replace: '_+' : ' ' : true }}
+              </span>
+            </div>
+            <div class="col-12 col-md-4">
+              <span class="text-bold-500 primary">
+                Payment Mode
+              </span>
+              <span class="d-block">
+                {{ order.payment_mode }}
+              </span>
+            </div>
+            <div class="col-12 col-md-4">
+              <span class="text-bold-500 primary">
+                Order Type
+              </span>
+              <span class="d-block">
+                {{ order.order_type | replace: '_+' : ' ' : true }}
+              </span>
+            </div>
+            <div class="col-12 col-md-4">
+              <span class="text-bold-500 primary">
+                Order Delivery Address Type
+              </span>
+              <span class="d-block">
+                {{ order.order_delivery_address_type | replace: '_+' : ' ' : true }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card" *ngIf="order.order_lines.length">
+      <div class="card-header no-padding-bottom">
+        <h4 class="card-title">Variants</h4>
+      </div>
+      <div class="card-content">
+        <div class="card-body">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>Amount</th>
+                <th>Seller</th>
+                <th>Quantity</th>
+                <th colspan="2">Actions / Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let key of order.order_lines">
+                <td><a [routerLink]="['//product/detail', key.product.id]" routerLinkActive="router-link-active">
+                    {{ key.product.name }} <span
+                      *ngIf="key.product_variant">({{ getVariantValueMap(key.product_variant.attributes) | joincomma }})</span>
+                  </a>
+                </td>
+                <td>{{ key.amount || key.product.price }}</td>
+                <td><a [routerLink]="['//suppliers/details/', key.product.user.id]"
+                    routerLinkActive="router-link-active">{{ key.product.user.name }}</a></td>
+                <td>{{ key.quantity }}</td>
+                <td *ngIf="key.orderStatusId === 27">
+                  <button (click)="acceptOrderLine(key)" class="btn btn-success btn-raised"><i class="fa fa-check"
+                      aria-hidden="true"></i>
+                    Accept</button>
+                </td>
+                <td *ngIf="key.orderStatusId === 27">
+                  <button (click)="denyOrderLine(key)" class="btn btn-success btn-raised"><i class="fa fa-check"
+                      aria-hidden="true"></i>
+                    Deny</button>
+                </td>
+                <td *ngIf="key.orderStatusId !== 27 && key.order_status">
+                  {{ key.order_status.description | replace:'_':' ' | titlecase}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- <app-empty-state *ngIf="order.product_variant.length===0" title="No variants!"></app-empty-state> -->
+  </div>
+  <div class="col-12 col-md-4" *ngIf="address && addressTypeBool">
+    <div class="card">
+      <div class="card-header no-padding-bottom">
+        <h4 class="card-title">Delivery Address</h4>
+      </div>
+      <div class="card-content">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12 col-md-12">
+              <span class="d-block">
+                {{ address.name }}
+              </span>
+              <span class="d-block">
+                {{ address.mobileNumber }}
+              </span>
+              <span class="d-block">
+                {{ address.addressLine1 }}
+              </span>
+              <span class="d-block">
+                {{ address.addressLine2 }}
+              </span>
+              <span class="d-block">
+                {{ address.city }}
+              </span>
+              <span class="d-block">
+                {{ address.state }}
+              </span>
+              <span class="d-block">
+                {{ address.postalCode || address.pincode }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

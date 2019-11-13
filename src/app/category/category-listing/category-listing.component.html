@@ -1,117 +1,75 @@
-<div class="row text-left">
-  <div class="col-12">
-    <div class="content-header">Category</div>
-    <p class="content-sub-header">Categories Listing</p>
-  </div>
-</div>
-
 <!--Advanced filter Starts-->
 <section id="advanced">
   <div class="row text-left" matchHeight="card">
     <div class="col-sm-12">
       <div class="card fixedHeight">
-        <div class="card-header">
-          <h4 class="card-title">Categories Listing</h4>
-          <button class="btn btn-primary btn-raised pull-right" (click)="open(content)"><i
-              class="ft-plus font-medium-3 mr-2"></i>Add Category</button>
+        <div class="card-header no-padding-bottom">
+          <h4 class="card-title">Category Listing</h4>
+          <!-- <button class="btn btn-primary btn-raised pull-right" *ngIf="key.level > 0" [routerLink]="['/category']"
+            routerLinkActive="router-link-active" [queryParams]="{ level: key.level - 1 }">Parent Categories</button> -->
         </div>
         <div class="card-body">
-          <div class="card-block">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Category Name</th>
-                  <th>Created At</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody class="{{table_loader_class}}">
-                <tr *ngFor="let key of data;let i = index">
-                  <th scope="row">{{ i - 9 + page*10 }}</th>
-                  <td>{{ key.name }}</td>
-                  <td>{{ key.created_at | date: 'MMM d, y hh:mm:ss z' }}</td>
-                  <td>
-                    <a class="success p-0" data-original-title="" title=""
-                      (click)="openUpdCategory(updateCategoryContent,key)">
-                      <i class="ft-edit-2 font-medium-3 mr-2"></i>
-                    </a>
-                    <a class="danger p-0" data-original-title="" title="" (click)="confirmTextCategory(key)">
-                      <i class="ft-x font-medium-3 mr-2"></i>
-                    </a>
-                  </td>
-                </tr>
-                <tr *ngIf="noRecordErr">
-                  <td colspan="7">
-                    <div class="emty-container">
-                      <p> No Data Found</p>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-
+          <div class="row">
+            <div class="col-md-6">
+              <form [formGroup]="form">
+                <div class="form-group">
+                  <input class="form-control" type="text" placeholder="Search by Name..." formControlName="search">
+                </div>
+              </form>
+            </div>
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+              <button class="btn btn-primary btn-raised pull-right" [routerLink]="['./add']"
+                routerLinkActive="router-link-active"><i class="ft-plus font-medium-3 mr-2"></i>Add
+                Category</button>
+            </div>
           </div>
-          <div class="pagination-custom  pull-right">
-            <button [disabled]="page == 1" (click)="change_page(page, 0)"
+          <!-- <input #search class="search mb-2" type="text" placeholder="Search..." (keydown.enter)="onSearch(search.value)"> -->
+          <table class="table table-striped" *ngIf="(categories$ | async).length !== 0">
+            <thead>
+              <tr>
+                <th>S No.</th>
+                <th>Category Name</th>
+                <th>Created At</th>
+                <!-- <th>Status</th> -->
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let key of categories$ | async;let i = index">
+                <th scope="row">{{ i + offset + 1 }}</th>
+                <td>{{ key.name }}</td>
+                <td>{{ key.created_at | date: 'MMM d, y' }}</td>
+                <!-- <td>
+                    <button *ngIf="key.displayInApp == true" (click)="updateStatus(key.id, false, 'displayInApp')"
+                      class="btn btn-success btn-raised"><i class="fa fa-unlock" aria-hidden="true"></i> Active</button>
+                    <button *ngIf="key.displayInApp == false" (click)="updateStatus(key.id, true, 'displayInApp')"
+                      class="btn btn-danger danger btn-raised"><i class="fa fa-lock" aria-hidden="true"></i>
+                      &nbsp;&nbsp;Block </button>
+                  </td> -->
+                <td>
+                  <a class="success p-0" data-original-title="" title="" [routerLink]="['./edit', key.id]"
+                    routerLinkActive="router-link-active">
+                    <i class="ft-edit-2 font-medium-3 mr-2"></i>
+                  </a>
+                  <a class="danger p-0" data-original-title="" title="" (click)="confirmTextCategory(key)">
+                    <i class="ft-x font-medium-3 mr-2"></i>
+                  </a>
+                  <a *ngIf="key.level < 2" [routerLink]="['/category']" routerLinkActive="router-link-active"
+                    [queryParams]="{ parentId: key.id }" style="margin-left: 5px;">View Subcategories</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <app-empty-state *ngIf="(categories$ | async).length === 0" title="No categories found!"></app-empty-state>
+          <div class="pagination-custom" *ngIf="(categories$ | async).length !== 0">
+            <button [disabled]="page == 1" (click)="change_page(page - 1)"
               class="btn btn-success btn-raised">Previous</button>
-            <button [disabled]="disable_next" (click)="change_page(page, 1)"
+            <button [disabled]="nextPage$ | async" (click)="change_page(page + 1)"
               class="btn btn-success btn-raised">Next</button>
           </div>
         </div>
       </div>
     </div>
-
   </div>
 </section>
-<!--Advanced filter Ends-->
-
-<ng-template #content let-c="close" let-d="dismiss">
-  <form [formGroup]="addCategoryForm" (ngSubmit)="onAddCategory()">
-    <div class="modal-header">
-      <h4 class="modal-title">Add Category</h4>
-      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div class="form-group">
-        <label for="projectinput1">Category Name</label>
-        <div class="input-group">
-          <input type="text" class="form-control" formControlName="name" placeholder="Category name"
-            aria-describedby="basic-addon3">
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button type="submit" [disabled]="!addCategoryForm.valid" class="btn btn-primary btn-raised">
-        <i class="fa fa-check-square-o"></i>Save</button>
-      <button type="button" #close class="btn btn-secondary btn-raised" (click)="c('Close click')">Close</button>
-    </div>
-  </form>
-</ng-template>
-
-<ng-template #updateCategoryContent let-c="close" let-d="dismiss">
-  <form [formGroup]="updateCategoryForm" (ngSubmit)="onUpdateCategory()">
-    <div class="modal-header">
-      <h4 class="modal-title">Update Category</h4>
-      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div class="form-group">
-        <label for="projectinput1">Category Name</label>
-        <div class="input-group">
-          <input type="text" class="form-control" formControlName="name" ngModel="{{category.name}}" placeholder="Name"
-            aria-describedby="basic-addon3" placeholder="category name">
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button type="submit" [disabled]="!updateCategoryForm.valid" class="btn btn-primary btn-raised">
-        <i class="fa fa-check-square-o"></i>Save</button>
-      <button type="button" #close class="btn btn-secondary btn-raised" (click)="c('Close click')">Close</button>
-    </div>
-  </form>
-</ng-template>

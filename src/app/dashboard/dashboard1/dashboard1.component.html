@@ -1,124 +1,199 @@
-<div class="row">
+<!--Statistics cards Starts-->
+<div class="row nth-color-card">
+	<div class="col-xl-3 col-lg-6 col-md-6 col-12" routerLink="/order">
+		<div class="card gradient-blackberry">
+			<div class="card-body">
+				<div class="card-block pt-2 pb-0">
+					<div class="media">
+						<div class="media-body white text-left">
+							<h3 class="font-large-1 mb-0">{{dashboard_data.todays_orders}}</h3>
+							<span>Today's Orders</span>
+						</div>
+						<div class="media-right white text-right">
+							<i class="icon-pie-chart font-large-1"></i>
+						</div>
+					</div>
+				</div>
+				<div id="Widget-line-chart" class="height-75 WidgetlineChart WidgetlineChartshadow mb-2">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xl-3 col-lg-6 col-md-6 col-12" routerLink="/order">
+			<div class="card gradient-pomegranate">
+				<div class="card-body">
+					<div class="card-block pt-2 pb-0">
+						<div class="media">
+							<div class="media-body white text-left">
+								<h3 class="font-large-1 mb-0">{{dashboard_data.total_orders}}</h3>
+								<span>Total Orders</span>
+							</div>
+							<div class="media-right white text-right">
+								<i class="icon-wallet font-large-1"></i>
+							</div>
+						</div>
+					</div>
+					<div id="Widget-line-chart" class="height-75 WidgetlineChart WidgetlineChartshadow mb-2">
+	
+					</div>
+				</div>
+			</div>
+		</div>
 
-  <div class="col-xl-3 col-lg-6 col-md-6 col-12">
-    <div class="card bg-primary">
-      <div class="card-body">
-        <div class="card-block pt-2 pb-0">
-          <div class="media">
-            <div class="media-body white text-left">
-              <h3 class="font-large-1 mb-0">${{ data.totalBudget }}</h3>
-              <span>Total Budget</span>
-            </div>
-            <div class="media-right white text-right">
-              <i class="icon-bulb font-large-1"></i>
-            </div>
-          </div>
-        </div>
-        <div id="Widget-line-chart" class="height-75 WidgetlineChart WidgetlineChartShadow mb-3">
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="col-xl-3 col-lg-6 col-md-6 col-12" routerLink="/suppliers/todays-suppliers">
+		<div class="card gradient-green-tea">
+			<div class="card-body">
+				<div class="card-block pt-2 pb-0">
+					<div class="media">
+						<div class="media-body white text-left">
+							<h3 class="font-large-1 mb-0">{{dashboard_data.todays_suppliers}}</h3>
+							<span>Today's Suppliers</span>
+						</div>
+						<div class="media-right white text-right">
+							<i class="icon-graph font-large-1"></i>
+						</div>
+					</div>
+				</div>
+				<div id="Widget-line-chart" class="height-75 WidgetlineChart WidgetlineChartshadow mb-2">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xl-3 col-lg-6 col-md-6 col-12" routerLink="/suppliers">
+		<div class="card gradient-ibiza-sunset">
+			<div class="card-body">
+				<div class="card-block pt-2 pb-0">
+					<div class="media">
+						<div class="media-body white text-left">
+							<h3 class="font-large-1 mb-0">{{dashboard_data.total_suppliers}}</h3>
+							<span>Total Suppliers</span>
+						</div>
+						<div class="media-right white text-right">
+							<i class="icon-bulb font-large-1"></i>
+						</div>
+					</div>
+				</div>
+				<div id="Widget-line-chart" class="height-75 WidgetlineChart WidgetlineChartshadow mb-2">
+				</div>
 
-  <div class="col-xl-3 col-lg-6 col-md-6 col-12">
-    <div class="card bg-warning">
-      <div class="card-body">
-        <div class="card-block pt-2 pb-0">
-          <div class="media">
-            <div class="media-body white text-left">
-              <h3 class="font-large-1 mb-0">${{ data.usedBudget }}</h3>
-              <span>Total Expense Made</span>
-            </div>
-            <div class="media-right white text-right">
-              <i class="icon-pie-chart font-large-1"></i>
-            </div>
-          </div>
-        </div>
-        <div id="Widget-line-chart2" class="height-75 WidgetlineChart WidgetlineChartShadow mb-3">
-        </div>
-      </div>
-    </div>
-  </div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xl-3 col-lg-6 col-md-6 col-12" routerLink="/">
+		<div class="card gradient-pomegranate">
+			<div class="card-body">
+				<div class="card-block pt-2 pb-0">
+					<div class="media">
+						<div class="media-body white text-left">
+							<h3 class="font-large-1 mb-0">{{dashboard_data.todays_agents}}</h3>
+							<span>Today's Agents</span>
+						</div>
+						<div class="media-right white text-right">
+							<i class="icon-wallet font-large-1"></i>
+						</div>
+					</div>
+				</div>
+				<div id="Widget-line-chart" class="height-75 WidgetlineChart WidgetlineChartshadow mb-2">
 
-  <div class="col-xl-3 col-lg-6 col-md-6 col-12">
-    <div class="card bg-primary">
-      <div class="card-body">
-        <div class="card-block pt-2 pb-0">
-          <div class="media">
-            <div class="media-body white text-left">
-              <h3 class="font-large-1 mb-0">${{ data.budgetLeft }}</h3>
-              <span>Total Budget Left</span>
-            </div>
-            <div class="media-right white text-right">
-              <i class="icon-bulb font-large-1"></i>
-            </div>
-          </div>
-        </div>
-        <div id="Widget-line-chart" class="height-75 WidgetlineChart WidgetlineChartShadow mb-3">
-        </div>
-      </div>
-    </div>
-  </div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xl-3 col-lg-6 col-md-6 col-12" routerLink="/">
+		<div class="card gradient-green-tea">
+			<div class="card-body">
+				<div class="card-block pt-2 pb-0">
+					<div class="media">
+						<div class="media-body white text-left">
+							<h3 class="font-large-1 mb-0">{{dashboard_data.total_agents}}</h3>
+							<span>Total Agents</span>
+						</div>
+						<div class="media-right white text-right">
+							<i class="icon-graph font-large-1"></i>
+						</div>
+					</div>
+				</div>
+				<div id="Widget-line-chart" class="height-75 WidgetlineChart WidgetlineChartshadow mb-2">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xl-3 col-lg-6 col-md-6 col-12" routerLink="/retailers/todays-retailers">
+		<div class="card gradient-pomegranate">
+			<div class="card-body">
+				<div class="card-block pt-2 pb-0">
+					<div class="media">
+						<div class="media-body white text-left">
+							<h3 class="font-large-1 mb-0">{{dashboard_data.todays_retailers}}</h3>
+							<span>Today's Retailers</span>
+						</div>
+						<div class="media-right white text-right">
+							<i class="icon-wallet font-large-1"></i>
+						</div>
+					</div>
+				</div>
+				<div id="Widget-line-chart" class="height-75 WidgetlineChart WidgetlineChartshadow mb-2">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xl-3 col-lg-6 col-md-6 col-12" routerLink="/retailers">
+			<div class="card gradient-pomegranate">
+				<div class="card-body">
+					<div class="card-block pt-2 pb-0">
+						<div class="media">
+							<div class="media-body white text-left">
+								<h3 class="font-large-1 mb-0">{{dashboard_data.total_retailers}}</h3>
+								<span>Total Retailers</span>
+							</div>
+							<div class="media-right white text-right">
+								<i class="icon-wallet font-large-1"></i>
+							</div>
+						</div>
+					</div>
+					<div id="Widget-line-chart" class="height-75 WidgetlineChart WidgetlineChartshadow mb-2">
+	
+					</div>
+				</div>
+			</div>
+		</div>
 
-  <div class="col-xl-3 col-lg-6 col-md-6 col-12">
-    <div class="card bg-success">
-      <div class="card-body">
-        <div class="card-block pt-2 pb-0">
-          <div class="media">
-            <div class="media-body white text-left">
-              <h3 class="font-large-1 mb-0">{{ data.totalCategory }}</h3>
-              <span>Total Category</span>
-            </div>
-            <div class="media-right white text-right">
-              <i class="icon-graph font-large-1"></i>
-            </div>
-          </div>
-        </div>
-        <div id="Widget-line-chart2" class="height-75 WidgetlineChart WidgetlineChartShadow mb-3">
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-xl-3 col-lg-6 col-md-6 col-12">
-    <div class="card bg-danger">
-      <div class="card-body">
-        <div class="card-block pt-2 pb-0">
-          <div class="media">
-            <div class="media-body white text-left">
-              <h3 class="font-large-1 mb-0">{{ data.budgetUsed_percentage }}%</h3>
-              <span>Budget Used %</span>
-            </div>
-            <div class="media-right white text-right">
-              <i class="icon-wallet font-large-1"></i>
-            </div>
-          </div>
-        </div>
-        <div id="Widget-line-chart2" class="height-75 WidgetlineChart WidgetlineChartShadow mb-3">
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-xl-3 col-lg-6 col-md-6 col-12">
-    <div class="card bg-danger">
-      <div class="card-body">
-        <div class="card-block pt-2 pb-0">
-          <div class="media">
-            <div class="media-body white text-left">
-              <h3 class="font-large-1 mb-0">{{ data.budgetLeft_percentage }}%</h3>
-              <span>Budget Left %</span>
-            </div>
-            <div class="media-right white text-right">
-              <i class="icon-wallet font-large-1"></i>
-            </div>
-          </div>
-        </div>
-        <div id="Widget-line-chart2" class="height-75 WidgetlineChart WidgetlineChartShadow mb-3">
-        </div>
-      </div>
-    </div>
-  </div>
-
+	<div class="col-xl-3 col-lg-6 col-md-6 col-12" routerLink="/">
+		<div class="card gradient-green-tea">
+			<div class="card-body">
+				<div class="card-block pt-2 pb-0">
+					<div class="media">
+						<div class="media-body white text-left">
+							<h3 class="font-large-1 mb-0">{{dashboard_data.todays_customers}}</h3>
+							<span>Today's Customers</span>
+						</div>
+						<div class="media-right white text-right">
+							<i class="icon-graph font-large-1"></i>
+						</div>
+					</div>
+				</div>
+				<div id="Widget-line-chart" class="height-75 WidgetlineChart WidgetlineChartshadow mb-2">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xl-3 col-lg-6 col-md-6 col-12" routerLink="/">
+		<div class="card gradient-blackberry">
+			<div class="card-body">
+				<div class="card-block pt-2 pb-0">
+					<div class="media">
+						<div class="media-body white text-left">
+							<h3 class="font-large-1 mb-0">{{dashboard_data.total_customers}}</h3>
+							<span>Total Customers</span>
+						</div>
+						<div class="media-right white text-right">
+							<i class="icon-pie-chart font-large-1"></i>
+						</div>
+					</div>
+				</div>
+				<div id="Widget-line-chart" class="height-75 WidgetlineChart WidgetlineChartshadow mb-2">
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-<!-- | number : '1.2-2' -->

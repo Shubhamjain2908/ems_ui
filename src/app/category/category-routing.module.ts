@@ -2,28 +2,24 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { CategoryComponent } from './category-listing/category-listing.component';
-import { SubCategoryComponent } from './subcategory-listing/subcategory-listing.component';
+import { AddCategoryComponent } from './add-category/add-category.component';
 
 
 const routes: Routes = [
   {
     path: '',
-    children: [
-      {
-        path: '',
-        component: CategoryComponent,
-        data: {
-          title: 'Category listing'
-        }
-      },
-      {
-        path: 'subcategory',
-        component: SubCategoryComponent,
-        data: {
-          title: 'Sub Category listing'
-        }
-      }
-    ]
+    component: CategoryComponent,
+    data: {
+      title: 'Category listing'
+    }
+  },
+  {
+    path: 'add',
+    component: AddCategoryComponent,
+  },
+  {
+    path: 'edit/:id',
+    component: AddCategoryComponent,
   }
 ];
 

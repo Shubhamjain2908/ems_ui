@@ -1,0 +1,125 @@
+<div class="row text-left">
+  <div class="col-12">
+    <div class="content-header">Suppliers</div>
+    <p class="content-sub-header">Suppliers Listing</p>
+  </div>
+</div>
+
+<!--Advanced filter Starts-->
+<section id="advanced">
+  <div class="row text-left" matchHeight="card">
+    <div class="col-sm-12">
+      <div class="card fixedHeight">
+        <div class="card-header no-padding-bottom">
+          <h4 class="card-title">Suppliers Listing</h4>
+          <button class="btn btn-primary btn-raised pull-right" routerLink="/suppliers/add-supplier"><i
+              class="ft-plus font-medium-3 mr-2"></i>Add Supplier</button>
+        </div>
+        <div class="card-body">
+          <div class="card-block">
+            <form [formGroup]="filterForm">
+              <div class="row">
+                <div class="col-md-6 mb-2">
+                  <input class="form-control" type="text" placeholder="Search by Name..." formControlName="name">
+                </div>
+                <div class="col-md-6 d-flex">
+                  <button (click)="filter();" type="button" class="btn btn-success btn-raised ">
+                    Search</button>
+
+                  <button (click)="resetFilter();" type="button" class="btn btn-danger btn-raised ">
+                    Reset</button>
+
+                  <span *ngIf="noRecordErr" class="pull-left" style="color: red; margin: 10px"> No Record found
+                    !!!</span>
+                </div>
+                <!-- <div class="col-md-1 mb-1">
+                  <button (click)="resetFilter();" type="button" class="btn btn-danger btn-raised ">
+                    Reset</button>
+                </div>
+                <div class="col-md-3 mb-3">
+                  <span *ngIf="noRecordErr" class="pull-left" style="color: red; margin: 10px"> No Record found
+                    !!!</span>
+                </div> -->
+              </div>
+            </form>
+            <!-- <input #search class="search mb-2" type="text" placeholder="Search..." (keydown.enter)="onSearch(search.value)"> -->
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>Supplier Name</th>
+                  <th>Email</th>
+                  <th>Mobile</th>
+                  <th>City</th>
+                  <th>Category</th>
+                  <th>Tags</th>
+                  <th>Product Type</th>
+                  <!-- <th>Created At</th> -->
+                  <th>Approval</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody class="{{table_loader_class}}">
+                <tr *ngFor="let key of data.suppliers;let i = index" dragula="DRAGULA_FACTS">
+                  <th scope="row">{{ i - 9 + page*10 }}</th>
+                  <td><a [routerLink]="['/suppliers/details/'+key.id]">{{key.name}}</a></td>
+                  <td>{{ key.email }}</td>
+                  <td>{{ key.mobileNumber }}</td>
+                  <td *ngIf="key.supplierDetails && key.supplierDetails.city">{{ key.supplierDetails.city }}</td>
+                  <td *ngIf="!key.supplierDetails || !key.supplierDetails.city">--</td>
+                  <td *ngIf="key.supplierDetails && key.supplierDetails.dealsIn">
+                    <ul style="list-style-type:none; margin-left: -30%">
+                      <li *ngFor="let dealsIn of key.supplierDetails.dealsIn;let i = index">
+                        {{dealsIn.name}}
+                      </li>
+                    </ul>
+                  </td>
+                  <td *ngIf="!key.supplierDetails">--</td>
+                  <td *ngIf="key.tags">
+                    <ul style="list-style-type:none; margin-left: -50%">
+                      <li *ngFor="let tag of key.tags;let i = index">
+                        {{tag.name}}
+                      </li>
+                    </ul>
+                  </td>
+                  <td *ngIf="!key.tags">--</td>
+                  <td *ngIf="key.supplierDetails && key.supplierDetails.supplyProductType">
+                    {{ key.supplierDetails.supplyProductType }}</td>
+                  <td *ngIf="!key.supplierDetails">--</td>
+                  <!-- <td>{{ key.created_at | date: 'MMM d, y' }}</td> -->
+                  <td *ngIf="key.isAdminVerified == false">
+                    <button (click)="updateStatusApproved(key, key.isAdminVerified)"
+                      class="btn btn-success btn-raised"><i class="fa fa-unlock" aria-hidden="true"></i>
+                      Approve</button>
+
+                  </td>
+                  <td *ngIf="key.isAdminVerified == true">Approved</td>
+                  <td *ngIf="key.isActive == true">Active</td>
+                  <td *ngIf="key.isActive == false">Blocked</td>
+                  <td>
+                    <button *ngIf="key.isActive == true" (click)="updateStatus(key, !key.isActive)"
+                      class="btn btn-success btn-raised"><i class="fa fa-unlock" aria-hidden="true"></i> Block</button>
+                    <button *ngIf="key.isActive == false" (click)="updateStatus(key, !key.isActive)"
+                      class="btn btn-danger danger btn-raised"><i class="fa fa-lock" aria-hidden="true"></i>
+                      &nbsp;&nbsp;Activate </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+          <!-- <div class="pagination-custom">
+            <button [disabled]="page == 1" (click)="change_page(page, 0)" class="btn btn-success btn-raised">Previous</button>
+            <button [disabled]="disable_next" (click)="change_page(page, 1)" class="btn btn-success btn-raised">Next</button>
+          </div> -->
+          <div class="pagination-custom">
+            <ngb-pagination (pageChange)="onPager($event)" [collectionSize]="data_count" [(page)]="page" [maxSize]="5">
+            </ngb-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Advanced filter Ends-->

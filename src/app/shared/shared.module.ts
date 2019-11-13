@@ -8,8 +8,9 @@ import { FooterComponent } from './footer/footer.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ToggleFullscreenDirective } from './directives/toggle-fullscreen.directive';
-import { CheckboxModule } from 'primeng/checkbox';
-import { TriStateCheckboxModule } from 'primeng/tristatecheckbox';
+import { EmptyStateComponent } from './components/empty-state/empty-state.component';
+import { JoinComma, SafePipe, ReplacePipe } from 'app/utils/pipes';
+
 
 @NgModule({
   exports: [
@@ -19,21 +20,27 @@ import { TriStateCheckboxModule } from 'primeng/tristatecheckbox';
     SidebarComponent,
     ToggleFullscreenDirective,
     NgbModule,
-    CheckboxModule,
-    TriStateCheckboxModule
+    EmptyStateComponent,
+    JoinComma,
+    SafePipe,
+    ReplacePipe
+    // TranslateModule
   ],
   imports: [
     RouterModule,
     CommonModule,
     NgbModule,
-    CheckboxModule,
-    TriStateCheckboxModule
+    // TranslateModule
   ],
   declarations: [
     FooterComponent,
     NavbarComponent,
     SidebarComponent,
-    ToggleFullscreenDirective
+    ToggleFullscreenDirective,
+    EmptyStateComponent,
+    JoinComma,
+    SafePipe,
+    ReplacePipe
   ]
 })
 export class SharedModule { }

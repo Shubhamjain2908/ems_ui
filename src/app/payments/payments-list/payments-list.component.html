@@ -1,0 +1,110 @@
+<!--Advanced filter Starts-->
+<section id="advanced">
+  <div class="row text-left" matchHeight="card">
+    <div class="col-sm-12">
+      <div class="card fixedHeight">
+        <div class="card-header no-padding-bottom">
+          <div class="row">
+            <div class="col-md-8">
+              <h4 class="card-title">Payments Listing</h4>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="form">
+            <div class="row">
+              <div class="col-md-6">
+                <form [formGroup]="form">
+                  <div class="form-group">
+                    <input class="form-control" type="text" placeholder="Search by Name..." formControlName="search">
+                  </div>
+                </form>
+              </div>
+              <div class="col-md-6">
+                <tree-select name="simpleSelect" [items]="categories$ | async" childrenField="children" tree-select
+                  [ngModel]="category" (ngModelChange)="onChangeCatgory($event)" placeholder="Category"
+                  [ngModelOptions]="{standalone: true}" [multiple]="true" [maxVisibleItemCount]="3">
+                </tree-select>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <p-dropdown [options]="publisedOptions" formControlName="is_published" [autoDisplayFirst]="false"
+                    [showClear]="true" placeholder="Published Status"></p-dropdown>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label class="form-input-label">User Type</label>
+                  <div class="row">
+                    <div class="col-sm-4">
+                      <p-radioButton name="group1" [value]="3" label="Retailer" formControlName="userType">
+                      </p-radioButton>
+                    </div>
+                    <div class="col-sm-4">
+                      <p-radioButton name="group1" [value]="2" label="Supplier" formControlName="userType">
+                      </p-radioButton>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label class="form-input-label" *ngIf="form.controls['userType'].value === 3">Retailer</label>
+                  <label class="form-input-label" *ngIf="form.controls['userType'].value === 2">Supplier</label>
+                  <p-dropdown [options]="users$ | async" filter="true" [showClear]=true formControlName="userId"
+                    [autoDisplayFirst]="false" optionLabel="name" placeholder="Select User"
+                    filterBy="label,value.name,value.email" (onChange)='onChangeUser($event)'>
+                  </p-dropdown>
+                  <small
+                    *ngIf="form.controls['userId'].hasError('required') && (form.controls['userId'].dirty || form.controls['userId'].touched) && form.controls['userType'].value === 2"
+                    class="text-danger" translate>
+                    Supplier is required!
+                  </small>
+                  <small
+                    *ngIf="form.controls['userId'].hasError('required') && (form.controls['userId'].dirty || form.controls['userId'].touched) && form.controls['userType'].value === 3"
+                    class="text-danger" translate>
+                    Retailer is required!
+                  </small>
+                </div>
+              </div>
+            </div>
+          </form>
+          <table class="table table-striped" *ngIf="(payments$ | async).length !== 0">
+            <thead>
+              <tr>
+                <th>S No.</th>
+                <th>Product Name</th>
+                <th>Product Seller</th>
+                <th>Customer</th>
+                <th>Amount</th>
+                <th>Created At</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let key of payments$ | async;let i = index">
+                <th scope="row">{{ i + offset + 1 }}</th>
+                <td>{{ key.product.name }}</td>
+                <td>{{ key.product.user.name }}</td>
+                <td>{{ key.order.customer_address.name }}</td>
+                <td>--</td>
+                <td>{{ key.created_at | date }}</td>
+                <td>
+                  <button class="btn btn-raised btn-primary" [routerLink]="['./', 'detail', key.id]"
+                    routerLinkActive="router-link-active">View Details</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <app-empty-state *ngIf="(payments$ | async).length === 0" title="No payments found!"></app-empty-state>
+          <div class="pagination-custom" *ngIf="(payments$ | async).length !== 0">
+            <button [disabled]="page == 1" (click)="change_page(page - 1)"
+              class="btn btn-success btn-raised">Previous</button>
+            <button [disabled]="nextPage$ | async" (click)="change_page(page + 1)"
+              class="btn btn-success btn-raised">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

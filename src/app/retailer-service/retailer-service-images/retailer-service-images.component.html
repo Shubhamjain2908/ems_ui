@@ -1,0 +1,37 @@
+<div class="row" *ngIf="(service$ | async)">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header no-padding-bottom">
+        <div class="row">
+          <div class="col-8">
+            <h4 class="card-title">{{ (service$ | async).name }} - Images</h4>
+          </div>
+          <div class="col-4">
+            <button class="btn pull-right btn-raised" [routerLink]="['./..']" routerLinkActive="router-link-active">Back
+              To Service</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header no-padding-bottom">
+        <h4 class="card-title">{{ (service$ | async).name }}</h4>
+      </div>
+      <div class="card-content">
+        <div class="card-body">
+          <ul class="no-list-style no-padding list-inline">
+            <li *ngFor="let image of (service$ | async).images" class="img-list flex-basis-20">
+              <img src="{{ image.url }}" class="img-responsive">
+            </li>
+            <!-- <li class="img-list flex-basis-20" *ngIf="(service$ | async).images.length < 5">
+              <p-fileUpload accept="image/*" (onSelect)="fileChangeListener($event)" [showUploadButton]="false"
+                [showCancelButton]="false" chooseLabel="Upload Image"></p-fileUpload>
+            </li> -->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

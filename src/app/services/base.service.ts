@@ -5,7 +5,12 @@ import { CookieService } from 'ngx-cookie';
 @Injectable()
 export class BaseService {
 
-  public base_url: String = 'http://localhost:8641/api/';
+  // public admin_url: String = 'http://localhost:3000/api/v1/admin/';
+  // public base_url: String = 'http://localhost:3000/api/v1/';
+  public admin_url: String = 'http://3.18.102.208/api/v1/admin/';
+  public base_url: String = 'http://3.18.102.208/api/v1/';
+  // public base_url: String = 'http://18.217.202.65/api/';
+
 
   constructor(private http: HttpClient, private cookieService: CookieService) { }
 
@@ -58,6 +63,57 @@ export class BaseService {
 
   postDirectObserve<T>(url: any, data: any) {
     return this.http.post<T>(this.base_url + url, data, { observe: 'response' });
+  }
+
+  getAdmin<T>(url: any, data: any = {}) {
+    const token = this.cookieService.get('User');
+    return this.http.get<T>(this.admin_url + url, {
+      headers: new HttpHeaders().set('Authorization', token),
+      params: data
+    });
+  }
+
+  postAdmin<T>(url: any, data: any) {
+    const token = this.cookieService.get('User');
+    return this.http.post<T>(this.admin_url + url, data, {
+      headers: new HttpHeaders().set('Authorization', token),
+      withCredentials: true
+    });
+  }
+
+  putAdmin<T>(url: any, data: any) {
+    const token = this.cookieService.get('User');
+    return this.http.put<T>(this.admin_url + url, data, {
+      headers: new HttpHeaders().set('Authorization', token),
+    });
+  }
+
+  patchAdmin<T>(url: any, data: any) {
+    const token = this.cookieService.get('User');
+    return this.http.patch<T>(this.admin_url + url, data, {
+      headers: new HttpHeaders().set('Authorization', token),
+    });
+  }
+
+  deleteAdmin<T>(url: any) {
+    const token = this.cookieService.get('User');
+    return this.http.delete<T>(this.admin_url + url, {
+      headers: new HttpHeaders().set('Authorization', token),
+    });
+  }
+
+  getDirectAdmin<T>(url: any, data: any = {}) {
+    return this.http.get<T>(this.admin_url + url, {
+      params: data
+    });
+  }
+
+  postDirectAdmin<T>(url: any, data: any) {
+    return this.http.post<T>(this.admin_url + url, data);
+  }
+
+  postDirectAdminObserve<T>(url: any, data: any) {
+    return this.http.post<T>(this.admin_url + url, data, { observe: 'response' });
   }
 
 }

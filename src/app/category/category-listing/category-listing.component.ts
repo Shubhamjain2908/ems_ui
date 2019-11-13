@@ -1,162 +1,95 @@
-import { Component, ViewEncapsulation, OnInit } from '@angular/core';
-import { CategoryService } from '../../services/category.service';
-import { Router } from '@angular/router';
-import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import * as alertFunctions from './../../shared/data/sweet-alert'
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import * as fromRoot from './../../reducers';
+import { Store } from '@ngrx/store';
+import { Router, ActivatedRoute } from '@angular/router';
+import { LoaderActions, CategoryActions } from 'app/shared/actions';
+import { tap, debounceTime, skip } from 'rxjs/operators';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import swal from 'sweetalert2';
-import { noWhitespaceValidator } from 'app/utils/custom-validators';
-
+import * as alertFunctions from '../../shared/data/sweet-alerts';
 @Component({
   selector: 'app-category-listing',
   templateUrl: './category-listing.component.html',
-  styleUrls: ['./category-listing.component.scss'],
-  providers: [CategoryService],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./category-listing.component.scss']
 })
 
 export class CategoryComponent implements OnInit {
-  public data: any = [];
-  noRecordErr = false;
-  table_loader_class = 'table_loader';
-  table_loader_class2 = '';
 
-  disable_next = false;
-  modalReference: NgbModalRef;
-  closeResult: string;
-  category: any;
-
+  categories$: Observable<any[]>;
+  loading$: Observable<boolean>;
+  nextPage$: Observable<boolean>;
+  limit = 30;
+  offset = 0;
   page = 1;
-  currentPage = 0;
-  payload: Object = {
-    page: 1
-  };
+  form: FormGroup;
+  level: string | number = 0;
 
-  addCategoryForm = new FormGroup({
-    name: new FormControl('', [Validators.required, noWhitespaceValidator])
-  });
-
-  updateCategoryForm = new FormGroup({
-    name: new FormControl('', [Validators.required, noWhitespaceValidator])
-  });
-
-  constructor(private modalService: NgbModal,
-    private _httpService: CategoryService,
-    private _router: Router) {
+  constructor(
+    private store: Store<any>,
+    private router: Router,
+    private route: ActivatedRoute,
+    private formBuilder: FormBuilder) {
+    this.loading$ = this.store.select(fromRoot.getLoadingStatus)
+    this.categories$ = this.store.select(fromRoot.getAllCategories);
+    this.nextPage$ = this.store.select(fromRoot.pageDisabled);
+    this.level = this.route.snapshot.queryParamMap.get('level');
+    this.store.dispatch(new CategoryActions.GetCategoryList({
+      parentId: this.route.snapshot.queryParamMap.get('parentId'),
+      level: this.level || 0,
+      limit: this.limit,
+      offset: this.offset
+    }))
   }
 
   ngOnInit() {
-    this.listing();
-  }
-
-  listing() {
-    this.table_loader_class = 'table_loader';
-    this.data = [];
-    this.noRecordErr = false;
-    this._httpService.listing(this.payload)
-      .subscribe((result: any) => {
-        if (result.success === true) {
-          this.table_loader_class = '';
-          if (result.data.length > 0) {
-            this.data = result.data;
-          }
-          if (result.data.length === 0 || result.data.length < 10) {
-            if (result.data.length === 0) {
-              this.noRecordErr = true;
-            }
-            this.disable_next = true;
-          } else {
-            this.disable_next = false;
-          }
+    this.route.queryParams.pipe(
+      skip(1),
+      tap(x => this.store.dispatch(new LoaderActions.SetLoadingTrue())),
+      debounceTime(200)
+    ).subscribe({
+      next: x => {
+        if (!x.level) {
+          this.store.dispatch(new CategoryActions.GetCategoryList({ ...x, level: this.level || 0 }));
+        } else {
+          this.level = x.level || 0;
+          this.store.dispatch(new CategoryActions.GetCategoryList(x));
         }
-      }, (err: any) => {
-        this.table_loader_class = '';
-        this.errorHandle(err);
-      }, () => console.log());
-  }
-
-  change_page(page, type) {
-    if (type === 1) {
-      page++;
-      this.currentPage = page;
-      this.page = page;
-    } else {
-      page--;
-      this.currentPage = page;
-      this.page = page;
-    }
-    this.payload['page'] = this.page;
-    this.listing();
-  }
-
-  onAddCategory() {
-    const data = this.addCategoryForm.value;
-    const b = this.data.some(obj => obj.name === data.name);
-    if (b) {
-      alertFunctions.typeCustom('Error!', 'Category already present!', 'warning');
-    } else {
-      this._httpService.add(data)
-        .subscribe((result: any) => {
-          if (result.success === true) {
-            this.modalReference.close();
-            alertFunctions.typeCustom('Great!', 'Category added!', 'success');
-            data.created_at = new Date();
-            this.data.unshift(data);
-            this.addCategoryForm.reset();
-          }
-        }, (err: any) => {
-          this.errorHandle(err);
-        }, () => console.log());
-    }
-  }
-
-  onUpdateCategory() {
-    const data = this.updateCategoryForm.value;
-    this._httpService.update(data, this.category.id)
-      .subscribe((result: any) => {
-        if (result.success === true) {
-          this.modalReference.close();
-          alertFunctions.typeCustom('Great!', 'Category updated!', 'success');
-          this.data = this.data.map((a) => {
-            if (+a.id === +this.category.id) {
-              a.name = data.name;
-            }
-            return a;
-          });
-          this.updateCategoryForm.reset();
-        }
-      }, (err: any) => {
-        this.errorHandle(err);
-      }, () => console.log());
-  }
-
-  openUpdCategory(content, category) {
-    this.category = category;
-    this.modalReference = this.modalService.open(content);
-    this.modalReference.result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      }
     });
+    this.form = this.formBuilder.group({
+      search: new FormControl('', [])
+    })
+    this.form.valueChanges.subscribe({
+      next: x => {
+        this.limit = 30;
+        this.offset = 0;
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: {
+            limit: this.limit,
+            offset: this.offset,
+            ...x
+          },
+          queryParamsHandling: 'merge',
+          skipLocationChange: true
+        });
+      }
+    })
   }
 
-  open(content) {
-    this.modalReference = this.modalService.open(content);
-    this.modalReference.result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+  change_page(page) {
+    this.page = page > 0 ? page : 1;
+    this.offset = 0 + this.limit * (this.page - 1);
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        limit: this.limit,
+        offset: this.offset
+      },
+      queryParamsHandling: 'merge',
+      skipLocationChange: true
     });
-  }
-  // This function is used in open
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
   }
 
   confirmTextCategory(data) {
@@ -175,36 +108,14 @@ export class CategoryComponent implements OnInit {
       buttonsStyling: false
     }).then(function (isConfirm) {
       if (typeof isConfirm.value !== 'undefined' && isConfirm.hasOwnProperty('value')) {
-        self.deleteCategory(data);
+        self.deleteCategory(data.id);
       }
     })
   }
 
-  deleteCategory(data) {
-    this._httpService.delete(data.id)
-      .subscribe((result: any) => {
-        alertFunctions.typeCustom('Great!', 'Category Deleted!', 'success');
-        this.data.splice(this.data.indexOf(data), 1);
-      }, (err: any) => {
-        this.errorHandle(err);
-      }, () => console.log());
+  deleteCategory(id: any) {
+    this.store.dispatch(new CategoryActions.DeleteCategory(id, { limit: this.limit, offset: this.offset, level: this.level || 0 }));
+    alertFunctions.typeCustom('Success!', 'Category deleted!', 'success');
   }
 
-  errorHandle(err) {
-    // this.displayMessageError = true;
-    if (err.status === 0) {
-      // this.message = 'Please check your internet connection';
-      alertFunctions.typeCustom('Error!', 'Please check your internet connection', 'warning');
-      return;
-    } else if (err.status === 500) {
-      alertFunctions.typeCustom('Server Error!', 'Internal Server Error', 'error');
-    } else if (err.status === 422) {
-      alertFunctions.typeCustom('Validation Error!', err.error.message, 'error');
-    } else if (err.status === 406) {
-      alertFunctions.typeCustom('Not Allowed!', err.error.message, 'error');
-    } else if (err.status === 401) {
-      this._router.navigate(['/logout']);
-    }
-    // this.message = JSON.parse(err._body).message;
-  }
 }

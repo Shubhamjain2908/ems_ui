@@ -1,0 +1,53 @@
+<form [formGroup]="editCustomerForm" (ngSubmit)="onUpdateCustomer()">
+  <div class="modal-header">
+    <h4 class="modal-title">Edit Customer</h4>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="projectinput1">Name</label>
+          <div class="input-group">
+            <input type="text" class="form-control" formControlName="name" placeholder="Name"
+              aria-describedby="basic-addon3">
+          </div>
+          <div
+            *ngIf="editCustomerForm.controls['name'].hasError('required') && (editCustomerForm.controls['name'].dirty || editCustomerForm.controls['name'].touched)"
+            class="error">
+            Please enter a name
+          </div>
+          <div *ngIf="editCustomerForm.controls['name'].hasError('pattern')" class="error">
+            Please enter a valid name
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="projectinput1">Mobile Number</label>
+              <div class="input-group">
+                <input type="number" class="form-control" formControlName="mobileNumber" placeholder="Mobile Number"
+                  aria-describedby="basic-addon3" disabled>
+              </div>
+              <div
+                *ngIf="editCustomerForm.controls['mobileNumber'].hasError('required') && (editCustomerForm.controls['mobileNumber'].dirty || editCustomerForm.controls['mobileNumber'].touched)"
+                class="error">
+                Please enter a mobile number
+              </div>
+              <div *ngIf="editCustomerForm.controls['mobileNumber'].hasError('pattern')" class="error">
+                Please enter a valid mobile number
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- </div> -->
+
+  <div class="modal-footer">
+    <button type="submit" [disabled]="!editCustomerForm.valid" class="btn btn-primary btn-raised">
+      <i class="fa fa-check-square-o"></i>Update Customer</button>
+  </div>
+</form>

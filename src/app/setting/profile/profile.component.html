@@ -1,0 +1,36 @@
+<section id="basic-form-layouts">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card-header no-padding-bottom">
+        <h4 class="card-title">Change Password</h4>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="px-3">
+            <form class="form" [formGroup]="passwordForm">
+              <div class="form-body">
+                <div class="form-group">
+                  <label for="input1">Old Password</label>
+                  <input type="password" id="input1" class="form-control" formControlName="old_password" #old_password>
+                </div>
+                <div class="form-group">
+                  <label for="input2">New Password</label>
+                  <input type="password" id="input2" class="form-control" formControlName="password" #password>
+                </div>
+                <div class="form-group">
+                  <label for="input2">Repeat Password</label>
+                  <input type="password" id="input2" class="form-control" formControlName="repeatPassword" #repeatPassword>
+                </div>
+              </div>
+              <div class="form-actions center">
+                <button type="submit" [disabled]="password.value!=repeatPassword.value || !passwordForm.valid" (click)="changePassword()" class="btn btn-raised btn-primary">
+                  <i class="fa fa-check-square-o"></i> Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

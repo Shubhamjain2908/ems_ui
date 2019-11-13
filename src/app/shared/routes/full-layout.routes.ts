@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from 'app/auth/auth-guard.service';
+import { AuthGuard } from '../auth/auth-guard.service';
 
-// Route for content layout with sidebar, navbar and footer.
 export const Full_ROUTES: Routes = [
   {
     path: 'dashboard',
@@ -14,13 +13,78 @@ export const Full_ROUTES: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'expense',
-    loadChildren: './expense/expense.module#ExpenseModule',
+    path: 'tag',
+    loadChildren: './tag/tag.module#TagModule',
     canActivate: [AuthGuard]
   },
   {
-    path: 'profile',
-    loadChildren: './profile/profile.module#ProfileModule',
+    path: 'collection',
+    loadChildren: './collection/collection.module#CollectionModule',
     canActivate: [AuthGuard]
-  }
+  },
+  {
+    path: 'offer',
+    loadChildren: './offer/offer.module#OfferModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'notification',
+    loadChildren: './notification/notification.module#NotificationModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'order',
+    loadChildren: './order/order.module#OrderModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'coupon',
+    loadChildren: './coupon/coupon.module#CouponModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'attribute',
+    loadChildren: './attribute/attribute.module#AttributeModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'banner',
+    loadChildren: './banner/banner.module#BannerModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'product',
+    loadChildren: './product/product.module#ProductModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'payments',
+    loadChildren: './payments/payments.module#PaymentsModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'service',
+    loadChildren: './retailer-service/retailer-service.module#RetailerServiceModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'suppliers',
+    loadChildren: './suppliers/suppliers.module#SuppliersModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'retailers',
+    loadChildren: './retailers/retailers.module#RetailersModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'customers',
+    loadChildren: './customers/customers.module#CustomersModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'setting',
+    loadChildren: './setting/setting.module#SettingModule',
+    canActivate: [AuthGuard]
+  },
 ];

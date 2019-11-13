@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { AdminService } from '../../services/admin.service';
 import { Router } from '@angular/router';
-import { DashboardService } from 'app/services/dashboard.service';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard1.component.html',
-  styleUrls: ['./dashboard1.component.scss'],
-  providers: [DashboardService]
+    selector: 'app-dashboard1',
+    templateUrl: './dashboard1.component.html',
+    styleUrls: ['./dashboard1.component.scss'],
+    providers: [AdminService]
+
 })
 
 export class Dashboard1Component implements OnInit {
-  data: any = {};
-  constructor(private _httpService: DashboardService, private _router: Router) {
+  dashboard_data: any = {};
+  constructor(private _httpService: AdminService, private _router: Router) {
   }
 
   ngOnInit() {
@@ -19,12 +20,11 @@ export class Dashboard1Component implements OnInit {
   }
 
   dashboard() {
-    this.data = {};
-    this._httpService.dashboard()
+      this._httpService.dashboard()
       .subscribe((result: any) => {
-        if (result.success === true) {
-          this.data = result.data;
-        }
+          if (result.success === true) {
+            this.dashboard_data = result.data;
+          }
       }, (err: any) => {
         this.errorHandle(err);
       }, () => console.log());
@@ -42,6 +42,7 @@ export class Dashboard1Component implements OnInit {
     } else if (err.status === 401) {
       this._router.navigate(['/logout']);
     }
-    // this.message = JSON.parse(err._body).message;
+      // this.message = JSON.parse(err._body).message;
   }
+
 }

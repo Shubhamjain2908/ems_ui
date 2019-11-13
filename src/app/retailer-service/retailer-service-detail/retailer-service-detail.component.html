@@ -1,0 +1,149 @@
+<div class="row" *ngIf="(service$ | async)">
+  <div class="col-12 col-md-8">
+    <div class="card">
+      <div class="card-header no-padding-bottom">
+        <div class="row">
+          <div class="col-8">
+            <h4 class="card-title">{{ (service$ | async).name }}</h4>
+          </div>
+          <div class="col-4">
+            <a class="success p-0 pull-right" [routerLink]="['./../..', 'edit', serviceId]"
+              routerLinkActive="router-link-active"><i class="ft-edit-2 font-medium-3 mr-2"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="card-content">
+        <div class="card-body">
+          <div class="mb-3">
+            <span class="text-bold-500 primary">
+              Service Details
+            </span>
+            <span class="d-block" [innerHTML]="(service$ | async).description">
+            </span>
+          </div>
+          <div class="row">
+            <div class="col-12 col-md-3">
+              <span class="text-bold-500 primary">
+                Service Price
+              </span>
+              <span class="d-block">
+                {{ (service$ | async).service_price }}
+              </span>
+            </div>
+            <div class="col-12 col-md-3">
+              <span class="text-bold-500 primary">
+                Service Name
+              </span>
+              <span class="d-block">
+                {{ (service$ | async).service_name }}
+              </span>
+            </div>
+            <div class="col-12 col-md-3">
+              <span class="text-bold-500 primary">
+                Retailer Details
+              </span>
+              <span class="d-block">
+                {{ (service$ | async).retailer.name }}
+                {{ (service$ | async).retailer.email }}
+              </span>
+            </div>
+            <div class="col-12 col-md-3">
+              <span class="text-bold-500 primary">
+                Category
+              </span>
+              <span class="d-block">
+                {{ (service$ | async).category.name }}
+              </span>
+            </div>
+            <div class="col-12 col-md-3">
+              <span class="text-bold-500 primary">
+                Description
+              </span>
+              <span class="d-block">
+                {{ (service$ | async).service_description }}
+              </span>
+            </div>
+            <div class="col-12 col-md-3">
+              <span class="text-bold-500 primary">
+                Published
+              </span>
+              <span class="d-block">
+                <!-- {{ (service$ | async).is_published }} -->
+                <p-inputSwitch [(ngModel)]="isPublished" (onChange)="togglePublishStatus($event)" [disabled]="noImages"
+                  (click)="setImagesError()">
+                </p-inputSwitch>
+                <br>
+                <small class="text-danger" translate *ngIf="imagesError">
+                  Add atleast one image to publish the service!
+                </small>
+              </span>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 0.5rem">
+            <div class="col-12 col-md-3" *ngFor="let attribute of (service$ | async).service_attributes">
+              <span class="text-bold-500 primary">
+                {{ attribute.name }}
+              </span>
+              <span class="d-block">
+                {{ attribute.value }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="card" *ngIf="(service$ | async).service_variant.length">
+      <div class="card-header no-padding-bottom">
+        <h4 class="card-title">Variants</h4>
+      </div>
+      <div class="card-content">
+        <div class="card-body">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Service Name</th>
+                <th>MRP</th>
+                <th>Selling Price</th>
+                <th>Quantity</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let key of (service$ | async).service_variant">
+                <td>{{ getVariantValueMap(key.attributes) | joincomma }}</td>
+                <td>{{ key.cost_price || 'Same as service' }}</td>
+                <td>{{ key.price || 'Same as service' }}</td>
+                <td>{{ key.quantity }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div> -->
+    <!-- <app-empty-state *ngIf="(service$ | async).service_variant.length===0" title="No variants!"></app-empty-state> -->
+  </div>
+
+
+  <div class="col-12 col-md-4">
+    <div class="card">
+      <div class="card-header no-padding-bottom">
+        <h4 class="card-title">Images</h4>
+      </div>
+      <div class="card-content" *ngIf="(service$ | async).images.length">
+        <div class="card-body">
+          <ul class="no-list-style no-padding">
+            <li *ngFor="let image of (service$ | async).images" class="img-list">
+              <img src="{{ image.url }}" class="img-responsive">
+            </li>
+          </ul>
+        </div>
+      </div>
+      <app-empty-state *ngIf="(service$ | async).images.length === 0" title="No Images!"></app-empty-state>
+      <div class="card-footer">
+        <a class="card-link info darken-2 pull-right" [routerLink]="['./', 'images']"
+          routerLinkActive="router-link-active" *ngIf="(service$ | async).images.length">View all</a>
+        <!-- <a class="card-link info darken-2 pull-right" [routerLink]="['./', 'images']"
+          routerLinkActive="router-link-active" *ngIf="(service$ | async).images.length === 0">Add images</a> -->
+      </div>
+    </div>
+  </div>
+</div>

@@ -10,17 +10,17 @@ import { Dashboard1Component } from './dashboard1/dashboard1.component';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    DashboardRoutingModule,
-    ChartistModule,
-    NgbModule,
-    MatchHeightModule
-  ],
-  exports: [],
-  declarations: [
-    Dashboard1Component
-  ],
-  providers: [],
+    imports: [
+        CommonModule,
+        DashboardRoutingModule,
+        ChartistModule,
+        NgbModule,
+        MatchHeightModule
+    ],
+    exports: [],
+    declarations: [
+        Dashboard1Component,
+    ],
+    providers: [],
 })
 export class DashboardModule { }

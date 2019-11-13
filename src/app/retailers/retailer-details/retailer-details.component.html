@@ -1,0 +1,230 @@
+<!--User Profile Starts-->
+<!--Basic User Details Starts-->
+<section id="user-profile" *ngIf="data!=null">
+  <div class="row">
+    <div class="col-12">
+      <div class="card profile-with-cover">
+        <div class="card-img-top img-fluid bg-cover height-200"
+          style="background: url('assets/img/photos/14.jpg') 50%;"></div>
+        <div class="media profil-cover-details row" style="margin-top: -4% !important;">
+          <div class="col-12">
+            <div class="halfway-fab">
+              <a class="profile-image">
+                <img onerror="this.src='./assets/img/default-user-image.png'" src="{{data.profile_pic}}"
+                  class="rounded-circle img-border gradient-summer width-100" alt="Card image">
+              </a>
+              <div class="profile-info">
+                <span class="font-medium-2 text-uppercase">{{data.name}}</span>
+                <!-- <p class="grey font-small-2" *ngIf="data.ProudMember!=null">{{data.ProudMember.Category.category}}</p> -->
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-5">
+            </div> -->
+        </div>
+        <div class="profile-section">
+          <div class="row no-gutters">
+            <div class="col-lg-2 col-md-2">
+              <ul class="profile-menu no-list-style">
+                <li>
+                  <a (click)="showPage('About')"
+                    [ngClass]="currentPage === 'About' ? 'primary font-medium-2 font-weight-600 active' : 'primary font-medium-2 font-weight-600'">Personal
+                    Details</a>
+                </li>
+              </ul>
+            </div>
+            <div class="col-lg-2 col-md-2">
+              <ul class="profile-menu no-list-style">
+                <li>
+                  <a (click)="showPage('Details')"
+                    [ngClass]="currentPage === 'Details' ? 'primary font-medium-2 font-weight-600 active' : 'primary font-medium-2 font-weight-600'">Retailer
+                    Details</a>
+                </li>
+              </ul>
+            </div>
+            <div class="col-lg-2 col-md-2">
+              <ul class="profile-menu no-list-style">
+                <li>
+                  <a [routerLink]="['/retailers/edit/'+data.id]"><i
+                      class="ft-edit-2 font-medium-3 mr-2 primary font-medium-2 font-weight-600"></i></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Basic User Details Ends-->
+
+<!--About section starts-->
+<section id="about" *ngIf="currentPage === 'About' && data!=null">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header no-padding-bottom">
+          <h5 class="float-left">Retailer Details</h5>
+        </div>
+        <div class="clearfix"></div>
+        <div class="card-body">
+          <div class="card-block">
+            <div class="row">
+              <div class="col-12 col-md-6 col-lg-4">
+                <ul class="no-list-style reset-list" style="padding-inline-start:0px;">
+                  <li class="mb-2">
+                    <span class="text-bold-500 primary"><a><i class="ft-mail font-small-3"></i> Email:</a></span>
+                    <a class="display-block overflow-hidden">{{data.email}}</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <ul class="no-list-style reset-list">
+                  <li class="mb-2">
+                    <span class="text-bold-500 primary"><a><i class="ft-smartphone font-small-3"></i> Phone
+                        Number:</a></span>
+                    <span class="display-block overflow-hidden">{{data.mobileNumber}}</span>
+                  </li>
+
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--About section ends-->
+
+<!--Supplier details section starts-->
+<section id="details" *ngIf="currentPage === 'Details' && data!=null">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header no-padding-bottom">
+          <h5 class="float-left">Retailer Details</h5>
+        </div>
+        <div class="clearfix"></div>
+        <div class="card-body">
+          <div class="card-block">
+            <div class="row">
+              <div class="col-12 col-md-6 col-lg-4">
+                <ul class="no-list-style reset-list" style="padding-inline-start:0px;">
+                  <li class="mb-2">
+                    <span class="text-bold-500 primary"><a><i class="ft-globe"></i> City:</a></span>
+                    <a *ngIf="data.retailerDetails" class="display-block overflow-hidden">{{data.address[0].city}}</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <ul class="no-list-style reset-list" style="padding-inline-start:0px;">
+                  <li class="mb-2">
+                    <span class="text-bold-500 primary"><a><i class="icon-note"></i> Shop Name:</a></span>
+                    <a *ngIf="data.retailerDetails"
+                      class="display-block overflow-hidden">{{data.retailerDetails.shopName}}</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <ul class="no-list-style reset-list">
+                  <li class="mb-2">
+                    <span class="text-bold-500 primary"><a><i class="icon-list font-small-3"></i> Deals In:</a></span>
+                    <span *ngIf="data.retailerDetails">
+                      <span *ngFor="let dealsIn of data.retailerDetails.dealsIn"
+                        class="display-block overflow-hidden">{{dealsIn.name}}</span>
+                    </span>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <ul class="no-list-style reset-list" style="padding-inline-start:0px;">
+                  <li class="mb-2">
+                    <span class="text-bold-500 primary"><a><i class="icon-tag"></i> GSTIN:</a></span>
+                    <a *ngIf="data.retailerDetails"
+                      class="display-block overflow-hidden">{{data.retailerDetails.gstin}}</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <ul class="no-list-style reset-list" style="padding-inline-start:0px;">
+                  <li class="mb-2">
+                    <span class="text-bold-500 primary"><a><i class="icon-tag"></i> PAN Number:</a></span>
+                    <a *ngIf="data.retailerDetails"
+                      class="display-block overflow-hidden">{{data.retailerDetails.panNumber}}</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <ul class="no-list-style reset-list" style="padding-inline-start:0px;">
+                  <li class="mb-2">
+                    <span class="text-bold-500 primary"><a><i class="icon-tag"></i> Is Composite:</a></span>
+                    <a *ngIf="data.retailerDetails && data.retailerDetails.isComposite === true"
+                      class="display-block overflow-hidden">Yes</a>
+                    <a *ngIf="data.retailerDetails && data.retailerDetails.isComposite === false"
+                      class="display-block overflow-hidden">No</a>
+                    <a *ngIf="data.retailerDetails && data.retailerDetails.isComposite === null"
+                      class="display-block overflow-hidden">NA</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <ul class="no-list-style reset-list" style="padding-inline-start:0px;">
+                  <li class="mb-2">
+                    <span class="text-bold-500 primary"><a><i class="icon-tag"></i> Is Gst Exempted:</a></span>
+                    <a *ngIf="data.retailerDetails && data.retailerDetails.isGstExempted === true"
+                      class="display-block overflow-hidden">Yes</a>
+                    <a *ngIf="data.retailerDetails && data.retailerDetails.isGstExempted === false"
+                      class="display-block overflow-hidden">No</a>
+                    <a *ngIf="data.retailerDetails && data.retailerDetails.isGstExempted === null"
+                      class="display-block overflow-hidden">No</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <ul class="no-list-style reset-list">
+                  <li class="mb-2">
+                    <span class="text-bold-500 primary"><a><i class="ft-globe font-small-3"></i> Address:</a></span>
+                    <span *ngIf="data.address[0]" class="display-block overflow-hidden">{{data.address[0].addressLine1}}
+                    </span>
+                    <span *ngIf="data.address[0]" class="display-block overflow-hidden">{{data.address[0].addressLine2}}
+                    </span>
+                    <span *ngIf="data.address[0]" class="display-block overflow-hidden">{{data.address[0].landmark}}
+                    </span>
+                    <span *ngIf="data.address[0]" class="display-block overflow-hidden">{{data.address[0].city}}
+                    </span>
+                    <span *ngIf="data.address[0]" class="display-block overflow-hidden">{{data.address[0].state}}</span>
+                    <span *ngIf="data.address[0]" class="display-block overflow-hidden">{{data.address[0].postalCode}}
+                    </span>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <ul class="no-list-style reset-list">
+                  <li class="mb-2">
+                    <span class="text-bold-500 primary"><a><i class="ft-smartphone font-small-3"></i> Cancellation
+                        Policy:</a></span>
+                    <span *ngIf="data.policy" class="display-block overflow-hidden">{{data.policy.policy}}</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <ul class="no-list-style reset-list">
+                  <li class="mb-2">
+                    <span class="text-bold-500 primary"><a><i class="ft-smartphone font-small-3"></i> Return / Refund
+                        policy:</a></span>
+                    <span *ngIf="data.policy && data.policy.isTwoDay" class="display-block overflow-hidden">2
+                      days</span>
+                    <span *ngIf="data.policy && !data.policy.isTwoDay" class="display-block overflow-hidden">7
+                      days</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Supplier details section ends-->

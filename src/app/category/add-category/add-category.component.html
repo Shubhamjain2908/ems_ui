@@ -1,0 +1,95 @@
+<div class="row text-left">
+  <div class="col-12">
+    <!-- <div class="content-header">{{(actionType=='edit')? (userRole == 'SP' ? 'Edit Service Provider' : 'Edit User') : (userRole == 'SP' ? 'Add Service Provider' : 'Add User')}}</div> -->
+
+  </div>
+</div>
+
+<!--Advanced filter Starts-->
+<section id="advanced">
+  <div class="row text-left" matchHeight="card">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header no-padding-bottom">
+          <h4 class="card-title" *ngIf="!categoryId">Add Category</h4>
+          <h4 class="card-title" *ngIf="categoryId">Edit Category</h4>
+        </div>
+        <div class="px-3">
+          <div class="card-body">
+            <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label class="form-input-label">Type</label>
+                    <div class="row">
+                      <div class="col-sm-4">
+                        <p-radioButton name="group1" [value]="0" label="Category" formControlName="level">
+                        </p-radioButton>
+                      </div>
+                      <div class="col-sm-4">
+                        <p-radioButton name="group1" [value]="1" label="Subcategory" formControlName="level">
+                        </p-radioButton>
+                      </div>
+                      <div class="col-sm-4">
+                        <p-radioButton name="group1" [value]="2" label="Sub Subcategory" formControlName="level">
+                        </p-radioButton>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-12" *ngIf="showDropdown">
+                  <div class="form-group d-flex flex-column">
+                    <label class="form-input-label">Category</label>
+                    <p-dropdown [options]="categories$ | async" filter="true" formControlName="parentId"
+                      [autoDisplayFirst]="false" placeholder="Select Parent Category"></p-dropdown>
+                    <small *ngIf="form.hasError('parentIdError') && (form.dirty || form.touched)" class="text-danger"
+                      translate>
+                      Category is required!
+                    </small>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label class="form-input-label">Name</label>
+                    <input type="text" class="form-control" placeholder="Name" formControlName="name">
+                    <small
+                      *ngIf="form.controls['name'].hasError('whitespace') && (form.controls['name'].dirty || form.controls['name'].touched)"
+                      class="text-danger" translate>
+                      Invalid value!
+                    </small>
+                    <small
+                      *ngIf="form.controls['name'].hasError('required') && (form.controls['name'].dirty || form.controls['name'].touched)"
+                      class="text-danger" translate>
+                      Category name is required!
+                    </small>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label class="form-input-label">Image</label>
+                    <input type="file" class="form-control" accept="image/*" placeholder="Image"
+                      (change)="selectFile($event)">
+                    <div *ngIf='image'>
+                      <img style="width:100px;height:100px;object-fit:cover" src="{{image}}">
+                    </div>
+                    <!-- <small
+                        *ngIf="form.controls['name'].hasError('whitespace') && (form.controls['name'].dirty || form.controls['name'].touched)"
+                        class="text-danger" translate>
+                        Invalid value!
+                      </small> -->
+                  </div>
+                </div>
+                <div class="form-actions col-md-12">
+                  <button class="btn btn-raised btn-primary pull-right">
+                    <i class="fa fa-check-square-o"></i> Save
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Advanced filter Ends-->

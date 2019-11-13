@@ -1,0 +1,77 @@
+<div class="row" *ngIf="(payments$ | async)">
+  <div class="col-12 col-md-8">
+    <div class="card">
+      <div class="card-header no-padding-bottom">
+        <div class="row">
+          <div class="col-8">
+            <h4 class="card-title">{{ (payments$ | async).name }}</h4>
+          </div>
+          <div class="col-4">
+            <a class="success p-0 pull-right" [routerLink]="['./../..', 'edit', paymentsId]"
+              routerLinkActive="router-link-active"><i class="ft-edit-2 font-medium-3 mr-2"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="card-content">
+        <div class="card-body">
+          <div class="mb-3">
+            <span class="text-bold-500 primary">
+              Payment and Product Details
+            </span>
+            <span class="d-block" [innerHTML]="(payments$ | async).description">
+            </span>
+          </div>
+          <div class="row">
+            <div class="col-12 col-md-3">
+              <span class="text-bold-500 primary">
+                MRP
+              </span>
+              <span class="d-block">
+                {{ (payments$ | async).order_product_details.cost_price }}
+              </span>
+            </div>
+            <div class="col-12 col-md-3">
+              <span class="text-bold-500 primary">
+                Selling Price
+              </span>
+              <span class="d-block">
+                {{ (payments$ | async).order_product_details.selling_price }}
+              </span>
+            </div>
+            <div class="col-12 col-md-3">
+              <span class="text-bold-500 primary">
+                Margin
+              </span>
+              <span class="d-block">
+                {{ (payments$ | async).order_product_details.margin }}
+              </span>
+            </div>
+            <div class="col-12 col-md-3">
+              <span class="text-bold-500 primary">
+                GST
+              </span>
+              <span class="d-block" *ngIf='!(payments$ | async).order_product_details.gst'>--</span>
+              <span class="d-block">
+                {{ (payments$ | async).order_product_details.gst }} %
+              </span>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 0.5rem">
+            <div class="col-12 col-md-3">
+              <span class="text-bold-500 primary" *ngIf="(payments$ | async).product.user.userTypeId == 2">
+                Supplier Name
+              </span>
+              <span class="text-bold-500 primary" *ngIf="(payments$ | async).product.user.userTypeId == 3">
+                Retailer Name
+              </span>
+              <span class="d-block" *ngIf='!(payments$ | async).product.user'>--</span>
+              <span class="d-block">
+                {{ (payments$ | async).product.user.name }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

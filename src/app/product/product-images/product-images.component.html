@@ -1,0 +1,63 @@
+<div class="row" *ngIf="(product$ | async)">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header no-padding-bottom">
+        <div class="row">
+          <div class="col-8">
+            <h4 class="card-title">{{ (product$ | async).name }} - Images</h4>
+          </div>
+          <div class="col-4">
+            <button class="btn pull-right btn-raised" [routerLink]="['./..']" routerLinkActive="router-link-active">Back
+              To Product</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header no-padding-bottom">
+        <h4 class="card-title">{{ (product$ | async).name }}</h4>
+      </div>
+      <div class="card-content">
+        <div class="card-body">
+          <ul class="no-list-style no-padding list-inline">
+            <li *ngFor="let image of (product$ | async).images" class="img-list flex-basis-20">
+              <div class="image-relative-wrapper">
+                <img src="{{ image.url }}" class="img-responsive">
+                <div class="close-icon" (click)="confirmTextImage(image)">
+                  <i class="fa fa-close"></i>
+                </div>
+              </div>
+
+            </li>
+            <li class="img-list flex-basis-20" *ngIf="(product$ | async).images.length < 5">
+              <p-fileUpload accept="image/*" (onSelect)="fileChangeListener($event)" [showUploadButton]="false"
+                [showCancelButton]="false" chooseLabel="Upload Image"></p-fileUpload>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12" *ngFor="let variant of (product$ | async).product_variant">
+    <div class="card">
+      <div class="card-header no-padding-bottom">
+        <h4 class="card-title">{{ getVariantValueMap(variant.attributes) | joincomma }}</h4>
+      </div>
+      <div class="card-content">
+        <div class="card-body">
+          <ul class="no-list-style no-padding list-inline">
+            <li *ngFor="let image of variant.images" class="img-list flex-basis-20">
+              <img src="{{ image.url }}" class="img-responsive">
+            </li>
+            <li class="img-list flex-basis-20" *ngIf="variant.images.length < 5">
+              <p-fileUpload accept="image/*" (onSelect)="fileChangeListener($event, 1, variant.id)"
+                [showUploadButton]="false" [showCancelButton]="false" chooseLabel="Upload Image"></p-fileUpload>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

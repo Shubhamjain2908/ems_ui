@@ -9,7 +9,7 @@ import {
 export class MatchHeightDirective implements AfterViewInit {
     // class name to match height
     @Input()
-    matchHeight : string;
+    matchHeight: string;
 
     constructor(private el: ElementRef) {
     }
@@ -22,14 +22,14 @@ export class MatchHeightDirective implements AfterViewInit {
     matchHeights(parent: HTMLElement, className: string) {
         // match height logic here
 
-        if (!parent) return;
+        if (!parent) { return; }
 
         // step 1: find all the child elements with the selected class name
         const children = parent.getElementsByClassName(className);
 
-        if (!children) return;
+        if (!children) { return; }
 
-        //Pixinvent - Match hight - fix --- comment below code
+        // Pixinvent - Match hight - fix --- comment below code
         Array.from(children).forEach((x: HTMLElement) => {
             x.style.height = 'initial';
         });

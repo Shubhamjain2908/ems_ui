@@ -1,0 +1,70 @@
+<!--Advanced filter Starts-->
+<section id="advanced">
+  <div class="row text-left" matchHeight="card">
+    <div class="col-sm-12">
+      <div class="card fixedHeight">
+        <div class="card-header no-padding-bottom">
+          <h4 class="card-title">Order Listing</h4>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="form">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <p-dropdown [options]="orderStatusOptions" formControlName="status" [autoDisplayFirst]="false"
+                    [showClear]="true" placeholder="Select Order Status"></p-dropdown>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <p-dropdown [options]="orderTypeOptions" formControlName="order_type" [autoDisplayFirst]="false"
+                    [showClear]="true" placeholder="Select Order Type"></p-dropdown>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <p-dropdown [options]="paymentModeOptions" formControlName="payment_mode" [autoDisplayFirst]="false"
+                    [showClear]="true" placeholder="Select Payment Mode"></p-dropdown>
+                </div>
+              </div>
+            </div>
+          </form>
+          <table class="table table-striped" *ngIf="(orders$ | async).length !== 0">
+            <thead>
+              <tr>
+                <th>S No.</th>
+                <th>Order Token</th>
+                <th>Order Status</th>
+                <!-- <th>Order Address type</th> -->
+                <th>Payment Mode</th>
+                <th>Created At</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let key of orders$ | async;let i = index">
+                <th scope="row">{{ i  + offset + 1}}</th>
+                <td>{{ key.token }}</td>
+                <td>{{ key.status | replace: '_+' : ' ' : true }}</td>
+                <!-- <td>{{ key.order_delivery_address_type }}</td> -->
+                <td>{{ key.payment_mode }}</td>
+                <td>{{ key.created_at | date }}</td>
+                <td>
+                  <button class="btn btn-raised btn-primary" [routerLink]="['./', 'detail', key.id]"
+                    routerLinkActive="router-link-active">View Details</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <app-empty-state *ngIf="(orders$ | async).length === 0" title="No orders found!"></app-empty-state>
+          <div class="pagination-custom" *ngIf="(orders$ | async).length !== 0">
+            <button [disabled]="page == 1" (click)="change_page(page - 1)"
+              class="btn btn-success btn-raised">Previous</button>
+            <button [disabled]="nextPage$ | async" (click)="change_page(page + 1)"
+              class="btn btn-success btn-raised">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

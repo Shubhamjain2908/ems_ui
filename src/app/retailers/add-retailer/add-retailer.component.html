@@ -1,0 +1,325 @@
+<form [formGroup]="addRetailerForm" (ngSubmit)="onAddRetailer()">
+  <div class="modal-header">
+    <h4 class="modal-title">Add Retailer</h4>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="projectinput1">Name</label>
+          <div class="input-group">
+            <input type="text" class="form-control" formControlName="name" placeholder="Name"
+              aria-describedby="basic-addon3">
+          </div>
+          <div
+            *ngIf="addRetailerForm.controls['name'].hasError('required') && (addRetailerForm.controls['name'].dirty || addRetailerForm.controls['name'].touched)"
+            class="error">
+            Please enter a name
+          </div>
+          <div *ngIf="addRetailerForm.controls['name'].hasError('pattern')" class="error">
+            Please enter a valid name
+          </div>
+        </div>
+        <!-- <div class="form-group">
+            <label for="projectinput1">Password</label>
+            <div class="input-group">
+              <input type="password" class="form-control" formControlName="password" placeholder="Password"
+                aria-describedby="basic-addon3">
+            </div>
+            <div
+              *ngIf="addRetailerForm.controls['password'].hasError('required') && (addRetailerForm.controls['password'].dirty || addRetailerForm.controls['password'].touched)"
+              class="error">
+              Please enter a password
+            </div>
+          </div> -->
+        <!-- <div class="form-group">
+            <label for="projectinput1">Supply Product Type</label>
+            <div class="input-group">
+              <select name="type" class="form-control" formControlName="supplyProductType"
+                aria-describedby="basic-addon3">
+                <option value="B2B">B2B</option>
+                <option value="B2C">B2C</option>
+                <option value="Both">Both</option>
+              </select>
+            </div>
+            <div
+              *ngIf="addRetailerForm.controls['supplyProductType'].hasError('required') && (addRetailerForm.controls['supplyProductType'].dirty || addRetailerForm.controls['supplyProductType'].touched)"
+              class="error">
+              Please enter a supplier product type
+            </div>
+          </div> -->
+        <div class="form-group">
+          <label for="projectinput1">GSTIN</label>
+          <div class="input-group" formGroupName="retailerDetails">
+            <input type="text" class="form-control" formControlName="gstin" placeholder="GSTIN"
+              aria-describedby="basic-addon3" (keyup)="onGstKeyUp($event)">
+          </div>
+          <div
+            *ngIf="addRetailerForm.controls['retailerDetails']['controls']['gstin'].hasError('required') && (addRetailerForm.controls['retailerDetails']['controls']['gstin'].dirty || addRetailerForm.controls['retailerDetails']['controls']['gstin'].touched)"
+            class="error">
+            Please enter GSTIN
+          </div>
+          <div *ngIf="addRetailerForm.controls['retailerDetails']['controls']['gstin'].hasError('pattern')"
+            class="error">
+            Please enter a valid GSTIN
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="projectinput1">Deals In</label>
+          <div class="input-group" formGroupName="retailerDetails">
+            <!-- <select name="type" class="form-control" formControlName="dealsIn" aria-describedby="basic-addon3" multiple>
+              <option *ngFor="let category of categories" [value]="category">
+                {{category.name}}</option>
+            </select> -->
+            <p-multiSelect [options]="categories" formControlName="dealsIn" optionLabel="name"></p-multiSelect>
+          </div>
+          <div
+            *ngIf="addRetailerForm.controls['retailerDetails']['controls']['dealsIn'].hasError('required') && (addRetailerForm.controls['retailerDetails']['controls']['dealsIn'].dirty || addRetailerForm.controls['retailerDetails']['controls']['dealsIn'].touched)"
+            class="error">
+            Please enter deals in
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="projectinput1">Shop Name</label>
+          <div class="input-group" formGroupName="retailerDetails">
+            <input type="text" class="form-control" formControlName="shopName" placeholder="Shop Name"
+              aria-describedby="basic-addon3">
+          </div>
+          <div
+            *ngIf="addRetailerForm.controls['retailerDetails']['controls']['shopName'].hasError('required') && (addRetailerForm.controls['retailerDetails']['controls']['shopName'].dirty || addRetailerForm.controls['retailerDetails']['controls']['shopName'].touched)"
+            class="error">
+            Please enter a business name
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-input-label">Tags</label>
+          <p-autoComplete [suggestions]="tags$ | async" (completeMethod)="searchTags($event)" formControlName="tags"
+            field="name" [multiple]="true" emptyMessage="No tags found!" placeholder="Enter tag name">
+          </p-autoComplete>
+        </div>
+        <!-- <div class="form-group">
+          <label class="form-input-label">Cancellation Policy</label>
+          <div class="input-group" formGroupName="policy">
+            <p-editor placeholder="Cancellation Policy" formControlName="policy" [style]="{'height':'240px'}">
+            </p-editor>
+          </div>
+        </div> -->
+        <div class="form-group">
+          <label class="form-input-label">Return / Refund Policy</label>
+          <div class="input-group" formGroupName="policy">
+            <p-toggleButton class="orange-button" onLabel="2 days" offLabel="7 days" formControlName="isTwoDay">
+            </p-toggleButton>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="projectinput1">Email</label>
+              <div class="input-group">
+                <input type="text" class="form-control" formControlName="email" placeholder="Email"
+                  aria-describedby="basic-addon3">
+              </div>
+              <div
+                *ngIf="addRetailerForm.controls['email'].hasError('required') && (addRetailerForm.controls['email'].dirty || addRetailerForm.controls['email'].touched)"
+                class="error">
+                Please enter a email id
+              </div>
+              <div *ngIf="addRetailerForm.controls['email'].hasError('email')" class="error">
+                Please enter a valid email id
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="projectinput1">Mobile Number</label>
+              <div class="input-group">
+                <input type="number" class="form-control" formControlName="mobileNumber" placeholder="Mobile Number"
+                  aria-describedby="basic-addon3">
+              </div>
+              <div
+                *ngIf="addRetailerForm.controls['mobileNumber'].hasError('required') && (addRetailerForm.controls['mobileNumber'].dirty || addRetailerForm.controls['mobileNumber'].touched)"
+                class="error">
+                Please enter a mobile number
+              </div>
+              <div *ngIf="addRetailerForm.controls['mobileNumber'].hasError('pattern')" class="error">
+                Please enter a valid mobile number
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="projectinput1">PAN Number</label>
+              <div class="input-group" formGroupName="retailerDetails">
+                <input type="text" class="form-control" formControlName="panNumber" placeholder="PAN Number"
+                  aria-describedby="basic-addon3">
+              </div>
+              <div
+                *ngIf="addRetailerForm.controls['retailerDetails']['controls']['panNumber'].hasError('required') && (addRetailerForm.controls['retailerDetails']['controls']['panNumber'].dirty || addRetailerForm.controls['retailerDetails']['controls']['panNumber'].touched)"
+                class="error">
+                Please enter pan number
+              </div>
+              <div *ngIf="addRetailerForm.controls['retailerDetails']['controls']['panNumber'].hasError('pattern')"
+                class="error">
+                Please enter a valid PAN Number
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="projectinput1">Is Composite</label>
+                  <div class="input-group" formGroupName="retailerDetails">
+                    <input type="checkbox" formControlName="isComposite">
+                  </div>
+                  <div
+                    *ngIf="addRetailerForm.controls['retailerDetails']['controls']['isComposite'].hasError('required') && (addRetailerForm.controls['retailerDetails']['controls']['isComposite'].dirty || addRetailerForm.controls['retailerDetails']['controls']['isComposite'].touched)"
+                    class="error">
+                    Please select if opted for composite
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="projectinput1">Is Gst Exempted</label>
+                  <div class="input-group" formGroupName="retailerDetails">
+                    <input type="checkbox" formControlName="isGstExempted" (change)="ifChecked($event)">
+                  </div>
+                  <div
+                    *ngIf="addRetailerForm.controls['retailerDetails']['controls']['isGstExempted'].hasError('required') && (addRetailerForm.controls['retailerDetails']['controls']['isGstExempted'].dirty || addRetailerForm.controls['retailerDetails']['controls']['isGstExempted'].touched)"
+                    class="error">
+                    Please select if opted for composite
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <!-- <div class="form-group">
+                <label for="projectinput1">Are You a</label>
+                <div class="input-group">
+                  <select name="type" class="form-control" formControlName="supplierType" aria-describedby="basic-addon3">
+                    <option value="Manufacturer">Manufacturer</option>
+                    <option value="Exporter">Exporter</option>
+                    <option value="Wholesaler">Wholesaler</option>
+                    <option value="Brand">Brand</option>
+                  </select>
+                </div>
+                <div
+                  *ngIf="addRetailerForm.controls['supplierType'].hasError('required') && (addRetailerForm.controls['supplierType'].dirty || addRetailerForm.controls['supplierType'].touched)"
+                  class="error">
+                  Please enter a supplier type
+                </div>
+              </div> -->
+          </div>
+          <div class="col-md-6">
+
+          </div>
+        </div>
+        <div class="row" formArrayName="address">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="projectinput1">Address Line 1</label>
+              <div class="input-group" formGroupName="0">
+                <input type="text" class="form-control" formControlName="addressLine1"
+                  placeholder="Apartment/house/flat number/Building floor" aria-describedby="basic-addon3">
+              </div>
+              <div
+                *ngIf="addRetailerForm.controls['address']['controls'][0]['controls']['addressLine1'].hasError('required') && (addRetailerForm.controls['address']['controls'][0]['controls']['addressLine1'].dirty || addRetailerForm.controls['address']['controls'][0]['controls']['addressLine1'].touched)"
+                class="error">
+                Please enter address
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" formArrayName="address">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="projectinput1">Address Line 2</label>
+              <div class="input-group" formGroupName="0">
+                <input type="text" class="form-control" formControlName="addressLine2"
+                  placeholder="Street address, P.O. box, company name" aria-describedby="basic-addon3">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" formArrayName="address">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="projectinput1">Landmark</label>
+              <div class="input-group" formGroupName="0">
+                <input type="text" class="form-control" formControlName="landmark" placeholder="Landmark"
+                  aria-describedby="basic-addon3">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" formArrayName="address">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="projectinput1">City</label>
+              <div class="input-group" formGroupName="0">
+                <input type="text" class="form-control" formControlName="city" placeholder="City"
+                  aria-describedby="basic-addon3">
+              </div>
+              <div
+                *ngIf="addRetailerForm.controls['address']['controls'][0]['controls']['city'].hasError('required') && (addRetailerForm.controls['address']['controls'][0]['controls']['city'].dirty || addRetailerForm.controls['address']['controls'][0]['controls']['city'].touched)"
+                class="error">
+                Please enter city
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" formArrayName="address">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="projectinput1">State</label>
+              <div class="input-group" formGroupName="0">
+                <input type="text" class="form-control" formControlName="state" placeholder="State"
+                  aria-describedby="basic-addon3">
+              </div>
+              <div
+                *ngIf="addRetailerForm.controls['address']['controls'][0]['controls']['state'].hasError('required') && (addRetailerForm.controls['address']['controls'][0]['controls']['state'].dirty || addRetailerForm.controls['address']['controls'][0]['controls']['state'].touched)"
+                class="error">
+                Please enter state
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" formArrayName="address">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="projectinput1">Postal Code</label>
+              <div class="input-group" formGroupName="0">
+                <input type="number" class="form-control" formControlName="postalCode" placeholder="Postal Code"
+                  aria-describedby="basic-addon3">
+              </div>
+              <div
+                *ngIf="addRetailerForm.controls['address']['controls'][0]['controls']['postalCode'].hasError('required') && (addRetailerForm.controls['address']['controls'][0]['controls']['postalCode'].dirty || addRetailerForm.controls['address']['controls'][0]['controls']['postalCode'].touched)"
+                class="error">
+                Please enter postal code
+              </div>
+              <div
+                *ngIf="addRetailerForm.controls['address']['controls'][0]['controls']['postalCode'].hasError('pattern')"
+                class="error">
+                Please enter a valid postal code
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- </div> -->
+
+  <div class="modal-footer">
+    <button type="submit" [disabled]="!addRetailerForm.valid" class="btn btn-primary btn-raised">
+      <i class="fa fa-check-square-o"></i>Onboard Retailer</button>
+  </div>
+</form>

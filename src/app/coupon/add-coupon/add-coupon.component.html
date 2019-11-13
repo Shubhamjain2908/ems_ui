@@ -1,0 +1,237 @@
+<!--Advanced filter Starts-->
+<section id="advanced">
+  <div class="row text-left" matchHeight="card">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header no-padding-bottom">
+          <h4 class="card-title" *ngIf="!couponId">Add Coupon</h4>
+          <h4 class="card-title" *ngIf="couponId">Edit Coupon</h4>
+        </div>
+        <div class="px-3">
+          <div class="card-body">
+            <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label class="form-input-label">Name</label>
+                    <input type="text" class="form-control" placeholder="Name" formControlName="name">
+                    <small
+                      *ngIf="form.controls['name'].hasError('whitespace') && (form.controls['name'].dirty || form.controls['name'].touched)"
+                      class="text-danger" translate>
+                      Invalid value!
+                    </small>
+                    <small
+                      *ngIf="form.controls['name'].hasError('required') && (form.controls['name'].dirty || form.controls['name'].touched)"
+                      class="text-danger" translate>
+                      Coupon name is required!
+                    </small>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label class="form-input-label">Code</label>
+                    <input type="text" class="form-control" placeholder="Code" formControlName="code">
+                    <small
+                      *ngIf="form.controls['name'].hasError('whitespace') && (form.controls['name'].dirty || form.controls['name'].touched)"
+                      class="text-danger" translate>
+                      Invalid value!
+                    </small>
+                    <small
+                      *ngIf="form.controls['name'].hasError('required') && (form.controls['name'].dirty || form.controls['name'].touched)"
+                      class="text-danger" translate>
+                      Coupon code is required!
+                    </small>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-input-label">Type</label>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <p-radioButton name="group1" value="fixed" label="Fixed" formControlName="type">
+                        </p-radioButton>
+                      </div>
+                      <div class="col-sm-6">
+                        <p-radioButton name="group1" value="percentage" label="Percentage" formControlName="type">
+                        </p-radioButton>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-input-label">Value</label>
+                    <input type="number" class="form-control" placeholder="Value" formControlName="value">
+                    <small
+                      *ngIf="form.controls['value'].hasError('required') && (form.controls['value'].dirty || form.controls['value'].touched)"
+                      class="text-danger" translate>
+                      Value is required!
+                    </small>
+                    <small
+                      *ngIf="form.controls['value'].hasError('pattern') && (form.controls['value'].dirty || form.controls['value'].touched)"
+                      class="text-danger" translate>
+                      Invalid value!
+                    </small>
+                    <small
+                      *ngIf="form.controls['value'].hasError('min') && (form.controls['value'].dirty || form.controls['value'].touched)"
+                      class="text-danger" translate>
+                      Enter value greater than 0!
+                    </small>
+                    <small
+                      *ngIf="form.hasError('percentageError') && (form.controls['value'].dirty || form.controls['value'].touched)"
+                      class="text-danger" translate>
+                      Invalid value!
+                    </small>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-input-label">Min Order Value</label>
+                    <input type="number" class="form-control" placeholder="Name" formControlName="min_order_value">
+                    <small
+                      *ngIf="form.controls['min_order_value'].hasError('pattern') && (form.controls['min_order_value'].dirty || form.controls['min_order_value'].touched)"
+                      class="text-danger" translate>
+                      Invalid value!
+                    </small>
+                    <small
+                      *ngIf="form.controls['min_order_value'].hasError('min') && (form.controls['min_order_value'].dirty || form.controls['min_order_value'].touched)"
+                      class="text-danger" translate>
+                      Enter value greater than 0!
+                    </small>
+                    <small
+                      *ngIf="form.hasError('percentageError') && (form.controls['min_order_value'].dirty || form.controls['min_order_value'].touched)"
+                      class="text-danger" translate>
+                      Invalid value!
+                    </small>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-input-label">Max Discount</label>
+                    <input type="number" class="form-control" placeholder="Max Discount"
+                      formControlName="max_discount_value">
+                    <small
+                      *ngIf="form.controls['max_discount_value'].hasError('pattern') && (form.controls['max_discount_value'].dirty || form.controls['max_discount_value'].touched)"
+                      class="text-danger" translate>
+                      Invalid value!
+                    </small>
+                    <small
+                      *ngIf="form.controls['max_discount_value'].hasError('min') && (form.controls['max_discount_value'].dirty || form.controls['max_discount_value'].touched)"
+                      class="text-danger" translate>
+                      Enter max_discount_value greater than 0!
+                    </small>
+                    <small
+                      *ngIf="form.hasError('percentageError') && (form.controls['max_discount_value'].dirty || form.controls['max_discount_value'].touched)"
+                      class="text-danger" translate>
+                      Invalid value!
+                    </small>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-input-label">Start Date</label>
+                    <p-calendar formControlName="start_date" [minDate]="today" [monthNavigator]="true"
+                      dateFormat="dd M yy"></p-calendar>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="form-input-label">End Date</label>
+                    <p-calendar formControlName="end_date" [minDate]="today" [monthNavigator]="true"
+                      dateFormat="dd M yy"></p-calendar>
+                    <small
+                      *ngIf="form.hasError('datesError') && (form.controls['end_date'].dirty || form.controls['end_date'].touched)"
+                      class="text-danger">End date cannot be less than start date!</small>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group d-flex flex-column">
+                    <label class="form-input-label">Business Type</label>
+                    <p-dropdown [options]="businessType" formControlName="business_type" [autoDisplayFirst]="true"
+                      placeholder="Select Parent Category"></p-dropdown>
+                    <small
+                      *ngIf="form.controls['business_type'].hasError('required') && (form.controls['business_type'].dirty || form.controls['business_type'].touched)"
+                      class="text-danger" translate>
+                      Business type is required!
+                    </small>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group d-flex flex-column">
+                    <label class="form-input-label">User Type</label>
+                    <p-dropdown [options]="userType" formControlName="user_type" [autoDisplayFirst]="true"
+                      placeholder="Select Parent Category"></p-dropdown>
+                    <small
+                      *ngIf="form.controls['user_type'].hasError('required') && (form.controls['user_type'].dirty || form.controls['user_type'].touched)"
+                      class="text-danger" translate>
+                      User type is required!
+                    </small>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group d-flex flex-column">
+                    <label class="form-input-label">Product Condition</label>
+                    <p-dropdown [options]="productCondition" formControlName="product_condition"
+                      [autoDisplayFirst]="true" placeholder="Select Parent Category"></p-dropdown>
+                    <small
+                      *ngIf="form.controls['product_condition'].hasError('required') && (form.controls['product_condition'].dirty || form.controls['product_condition'].touched)"
+                      class="text-danger" translate>
+                      Product condition is required!
+                    </small>
+                  </div>
+                </div>
+                <div class="col-sm-12" *ngIf="form.controls['product_condition'].value === 'selected_products'">
+                  <div class="form-group">
+                    <label class="form-input-label">Products</label>
+                    <p-autoComplete [suggestions]="products$ | async" (completeMethod)="search($event)"
+                      formControlName="products" field="name" [multiple]="true" emptyMessage="No products found!"
+                      placeholder="Enter product name">
+                    </p-autoComplete>
+                  </div>
+                </div>
+                <div class="col-sm-12" *ngIf="form.controls['product_condition'].value === 'selected_collections'">
+                  <div class="form-group">
+                    <label class="form-input-label">Collections</label>
+                    <p-autoComplete [suggestions]="collections$ | async" (completeMethod)="searchCollection($event)"
+                      formControlName="collections" field="name" [multiple]="true" emptyMessage="No collections found!"
+                      placeholder="Enter collection name">
+                    </p-autoComplete>
+                  </div>
+                </div>
+                <div class="col-sm-12" *ngIf="form.controls['product_condition'].value === 'exclude_collection'">
+                  <div class="form-group">
+                    <label class="form-input-label">Exclude Collections</label>
+                    <p-autoComplete [suggestions]="collections$ | async" (completeMethod)="searchCollection($event)"
+                      formControlName="exclude_collections" field="name" [multiple]="true"
+                      emptyMessage="No collections found!" placeholder="Enter collection name">
+                    </p-autoComplete>
+                  </div>
+                </div>
+                <div class="col-sm-12" *ngIf="form.controls['product_condition'].value === 'exclude_categories'">
+                  <div class="form-group">
+                    <label class="form-input-label">Exclude Categories</label>
+                    <tree-select name="simpleSelect" [items]="categories$ | async" childrenField="children" tree-select
+                      formControlName="exclude_categories" placeholder="Category" [allowParentSelection]="false"
+                      [multiple]="true">
+                    </tree-select>
+                    <!-- <small
+                      *ngIf="form.controls['exclude_categories'].hasError('required') && (form.controls['exclude_categories'].dirty || form.controls['exclude_categories'].touched)"
+                      class="text-danger" translate>
+                      Category is required!
+                    </small> -->
+                  </div>
+                </div>
+                <div class="form-actions col-md-12">
+                  <button class="btn btn-raised btn-primary pull-right">
+                    <i class="fa fa-check-square-o"></i> Save
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Advanced filter Ends-->

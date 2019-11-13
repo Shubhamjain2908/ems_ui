@@ -1,0 +1,346 @@
+<form [formGroup]="addSupplierForm" (ngSubmit)="onAddSupplier()">
+  <div class="modal-header">
+    <h4 class="modal-title">Add Supplier</h4>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="projectinput1">Name</label>
+          <div class="input-group">
+            <input type="text" class="form-control" formControlName="name" placeholder="Name"
+              aria-describedby="basic-addon3">
+          </div>
+          <div
+            *ngIf="addSupplierForm.controls['name'].hasError('required') && (addSupplierForm.controls['name'].dirty || addSupplierForm.controls['name'].touched)"
+            class="error">
+            Please enter a name
+          </div>
+          <div *ngIf="addSupplierForm.controls['name'].hasError('pattern')" class="error">
+            Please enter a valid name
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="projectinput1">Password</label>
+          <div class="input-group">
+            <input type="password" class="form-control" formControlName="password" placeholder="Password"
+              aria-describedby="basic-addon3">
+          </div>
+          <div
+            *ngIf="addSupplierForm.controls['password'].hasError('required') && (addSupplierForm.controls['password'].dirty || addSupplierForm.controls['password'].touched)"
+            class="error">
+            Please enter a password
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="projectinput1">GSTIN</label>
+          <div class="input-group" formGroupName="supplierDetails">
+            <input type="text" class="form-control" formControlName="gstin" placeholder="GSTIN"
+              aria-describedby="basic-addon3" (keyup)="onGstKeyUp($event)">
+          </div>
+          <div
+            *ngIf="addSupplierForm.controls['supplierDetails']['controls']['gstin'].hasError('required') && (addSupplierForm.controls['supplierDetails']['controls']['gstin'].dirty || addSupplierForm.controls['supplierDetails']['controls']['gstin'].touched)"
+            class="error">
+            Please enter GSTIN
+          </div>
+          <div *ngIf="addSupplierForm.controls['supplierDetails']['controls']['gstin'].hasError('pattern')"
+            class="error">
+            Please enter a valid GSTIN
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="projectinput1">Supply Product Type</label>
+          <div class="input-group" formGroupName="supplierDetails">
+            <select name="type" class="form-control" formControlName="supplyProductType"
+              aria-describedby="basic-addon3">
+              <option value="B2B">B2B</option>
+              <option value="B2C">B2C</option>
+              <option value="Both">Both</option>
+            </select>
+          </div>
+          <div
+            *ngIf="addSupplierForm.controls['supplierDetails']['controls']['supplyProductType'].hasError('required') && (addSupplierForm.controls['supplierDetails']['controls']['supplyProductType'].dirty || addSupplierForm.controls['supplierDetails']['controls']['supplyProductType'].touched)"
+            class="error">
+            Please enter a supplier product type
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="projectinput1">Are You a</label>
+          <div class="input-group" formGroupName="supplierDetails">
+            <!-- <select name="type" class="form-control" formControlName="supplierTypes" aria-describedby="basic-addon3"
+              multiple>
+              <option *ngFor="let supplierType of supplierTypes" [value]="supplierType">
+                {{supplierType.supplierType}}</option>
+            </select> -->
+            <p-multiSelect [options]="supplierTypes" formControlName="supplierTypes" optionLabel="supplierType">
+            </p-multiSelect>
+          </div>
+          <div
+            *ngIf="addSupplierForm.controls['supplierDetails']['controls']['supplierTypes'].hasError('required') && (addSupplierForm.controls['supplierDetails']['controls']['supplierTypes'].dirty || addSupplierForm.controls['supplierDetails']['controls']['supplierTypes'].touched)"
+            class="error">
+            Please enter a supplier type
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-input-label">Oneops Margin</label>
+          <input type="text" class="form-control" placeholder="MRP" formControlName="oneops_margin">
+          <small
+            *ngIf="addSupplierForm.controls['oneops_margin'].hasError('pattern') && (addSupplierForm.controls['oneops_margin'].dirty || addSupplierForm.controls['oneops_margin'].touched)"
+            class="text-danger" translate>
+            Invalid value!
+          </small>
+          <small
+            *ngIf="addSupplierForm.controls['oneops_margin'].hasError('min') && (addSupplierForm.controls['oneops_margin'].dirty || addSupplierForm.controls['oneops_margin'].touched)"
+            class="text-danger" translate>
+            Enter value greater than 0!
+          </small>
+          <small
+            *ngIf="addSupplierForm.controls['oneops_margin'].hasError('required') && (addSupplierForm.controls['oneops_margin'].dirty || addSupplierForm.controls['oneops_margin'].touched)"
+            class="text-danger" translate>
+            Oneops margin is required!
+          </small>
+        </div>
+        <div class="form-group">
+          <label class="form-input-label">Shiprocket Margin</label>
+          <input type="text" class="form-control" placeholder="MRP" formControlName="shiprocket_margin">
+          <small
+            *ngIf="addSupplierForm.controls['shiprocket_margin'].hasError('pattern') && (addSupplierForm.controls['shiprocket_margin'].dirty || addSupplierForm.controls['shiprocket_margin'].touched)"
+            class="text-danger" translate>
+            Invalid value!
+          </small>
+          <small
+            *ngIf="addSupplierForm.controls['shiprocket_margin'].hasError('min') && (addSupplierForm.controls['shiprocket_margin'].dirty || addSupplierForm.controls['shiprocket_margin'].touched)"
+            class="text-danger" translate>
+            Enter value greater than 0!
+          </small>
+          <small
+            *ngIf="addSupplierForm.controls['shiprocket_margin'].hasError('required') && (addSupplierForm.controls['shiprocket_margin'].dirty || addSupplierForm.controls['shiprocket_margin'].touched)"
+            class="text-danger" translate>
+            Shiprocket margin is required!
+          </small>
+        </div>
+        <div class="form-group">
+          <label class="form-input-label">Tags</label>
+          <p-autoComplete [suggestions]="tags$ | async" (completeMethod)="searchTags($event)" formControlName="tags"
+            field="name" [multiple]="true" emptyMessage="No tags found!" placeholder="Enter tag name">
+          </p-autoComplete>
+        </div>
+        <!-- <div class="form-group">
+          <label class="form-input-label">Cancellation Policy</label>
+          <div class="input-group" formGroupName="policy">
+            <p-editor placeholder="Cancellation Policy" formControlName="policy" [style]="{'height':'240px'}">
+            </p-editor>
+          </div>
+        </div> -->
+        <div class="form-group">
+          <label class="form-input-label">Return / Refund Policy</label>
+          <div class="input-group" formGroupName="policy">
+            <p-toggleButton class="orange-button" onLabel="2 days" offLabel="7 days" formControlName="isTwoDay">
+            </p-toggleButton>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="projectinput1">Email</label>
+              <div class="input-group">
+                <input type="text" class="form-control" formControlName="email" placeholder="Email"
+                  aria-describedby="basic-addon3">
+              </div>
+              <div
+                *ngIf="addSupplierForm.controls['email'].hasError('required') && (addSupplierForm.controls['email'].dirty || addSupplierForm.controls['email'].touched)"
+                class="error">
+                Please enter a email id
+              </div>
+              <div *ngIf="addSupplierForm.controls['email'].hasError('email')" class="error">
+                Please enter a valid email id
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="projectinput1">Mobile Number</label>
+              <div class="input-group">
+                <input type="number" class="form-control" formControlName="mobileNumber" placeholder="Mobile Number"
+                  aria-describedby="basic-addon3">
+              </div>
+              <div
+                *ngIf="addSupplierForm.controls['mobileNumber'].hasError('required') && (addSupplierForm.controls['mobileNumber'].dirty || addSupplierForm.controls['mobileNumber'].touched)"
+                class="error">
+                Please enter a mobile number
+              </div>
+              <div *ngIf="addSupplierForm.controls['mobileNumber'].hasError('pattern')" class="error">
+                Please enter a valid mobile number
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="projectinput1">Business Name</label>
+              <div class="input-group" formGroupName="supplierDetails">
+                <input type="text" class="form-control" formControlName="businessName" placeholder="Business Name"
+                  aria-describedby="basic-addon3">
+              </div>
+              <div
+                *ngIf="addSupplierForm.controls['supplierDetails']['controls']['businessName'].hasError('required') && (addSupplierForm.controls['supplierDetails']['controls']['businessName'].dirty || addSupplierForm.controls['supplierDetails']['controls']['businessName'].touched)"
+                class="error">
+                Please enter a business name
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="projectinput1">Deals In</label>
+              <div class="input-group" formGroupName="supplierDetails">
+                <!-- <select name="type" class="form-control" formControlName="dealsIn" aria-describedby="basic-addon3"
+                  multiple>
+                  <option *ngFor="let category of categories" [value]="category">
+                    {{category.name}}</option>
+                </select> -->
+                <p-multiSelect [options]="categories" formControlName="dealsIn" optionLabel="name"></p-multiSelect>
+              </div>
+              <div
+                *ngIf="addSupplierForm.controls['supplierDetails']['controls']['dealsIn'].hasError('required') && (addSupplierForm.controls['supplierDetails']['controls']['dealsIn'].dirty || addSupplierForm.controls['supplierDetails']['controls']['dealsIn'].touched)"
+                class="error">
+                Please enter deals in
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="projectinput1">PAN Number</label>
+              <div class="input-group" formGroupName="supplierDetails">
+                <input type="text" class="form-control" formControlName="panNumber" placeholder="PAN Number"
+                  aria-describedby="basic-addon3">
+              </div>
+              <div
+                *ngIf="addSupplierForm.controls['supplierDetails']['controls']['panNumber'].hasError('required') && (addSupplierForm.controls['supplierDetails']['controls']['panNumber'].dirty || addSupplierForm.controls['supplierDetails']['controls']['panNumber'].touched)"
+                class="error">
+                Please enter pan number
+              </div>
+              <div *ngIf="addSupplierForm.controls['supplierDetails']['controls']['panNumber'].hasError('pattern')"
+                class="error">
+                Please enter a valid PAN Number
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="projectinput1">Is Composite</label>
+              <div class="input-group" formGroupName="supplierDetails">
+                <input type="checkbox" formControlName="isComposite">
+              </div>
+              <div
+                *ngIf="addSupplierForm.controls['supplierDetails']['controls']['isComposite'].hasError('required') && (addSupplierForm.controls['supplierDetails']['controls']['isComposite'].dirty || addSupplierForm.controls['supplierDetails']['controls']['isComposite'].touched)"
+                class="error">
+                Please select if opted for composite
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="projectinput1">Address Line 1</label>
+              <div class="input-group" formGroupName="supplierDetails">
+                <input type="text" class="form-control" formControlName="addressLine1"
+                  placeholder="Apartment/house/flat number/Building floor" aria-describedby="basic-addon3">
+              </div>
+              <div
+                *ngIf="addSupplierForm.controls['supplierDetails']['controls']['addressLine1'].hasError('required') && (addSupplierForm.controls['supplierDetails']['controls']['addressLine1'].dirty || addSupplierForm.controls['supplierDetails']['controls']['addressLine1'].touched)"
+                class="error">
+                Please enter address
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="projectinput1">Address Line 2</label>
+              <div class="input-group" formGroupName="supplierDetails">
+                <input type="text" class="form-control" formControlName="addressLine2"
+                  placeholder="Street address, P.O. box, company name" aria-describedby="basic-addon3">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="projectinput1">Landmark</label>
+              <div class="input-group" formGroupName="supplierDetails">
+                <input type="text" class="form-control" formControlName="landmark" placeholder="Landmark"
+                  aria-describedby="basic-addon3">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="projectinput1">City</label>
+              <div class="input-group" formGroupName="supplierDetails">
+                <input type="text" class="form-control" formControlName="city" placeholder="City"
+                  aria-describedby="basic-addon3">
+              </div>
+              <div
+                *ngIf="addSupplierForm.controls['supplierDetails']['controls']['city'].hasError('required') && (addSupplierForm.controls['supplierDetails']['controls']['city'].dirty || addSupplierForm.controls['supplierDetails']['controls']['city'].touched)"
+                class="error">
+                Please enter city
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="projectinput1">State</label>
+              <div class="input-group" formGroupName="supplierDetails">
+                <input type="text" class="form-control" formControlName="state" placeholder="State"
+                  aria-describedby="basic-addon3">
+              </div>
+              <div
+                *ngIf="addSupplierForm.controls['supplierDetails']['controls']['state'].hasError('required') && (addSupplierForm.controls['supplierDetails']['controls']['state'].dirty || addSupplierForm.controls['supplierDetails']['controls']['state'].touched)"
+                class="error">
+                Please enter state
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="projectinput1">Postal Code</label>
+              <div class="input-group" formGroupName="supplierDetails">
+                <input type="number" class="form-control" formControlName="postalCode" placeholder="Postal Code"
+                  aria-describedby="basic-addon3">
+              </div>
+              <div
+                *ngIf="addSupplierForm.controls['supplierDetails']['controls']['postalCode'].hasError('required') && (addSupplierForm.controls['supplierDetails']['controls']['postalCode'].dirty || addSupplierForm.controls['supplierDetails']['controls']['postalCode'].touched)"
+                class="error">
+                Please enter postal code
+              </div>
+              <div *ngIf="addSupplierForm.controls['supplierDetails']['controls']['postalCode'].hasError('pattern')"
+                class="error">
+                Please enter a valid postal code
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- </div> -->
+
+  <div class="modal-footer">
+    <button type="submit" [disabled]="!addSupplierForm.valid" class="btn btn-primary btn-raised">
+      <i class="fa fa-check-square-o"></i>Onboard Supplier</button>
+  </div>
+</form>

@@ -1,0 +1,511 @@
+<div class="row text-left">
+  <div class="col-12">
+    <!-- <div class="content-header">{{(actionType=='edit')? (userRole == 'SP' ? 'Edit Service Provider' : 'Edit User') : (userRole == 'SP' ? 'Add Service Provider' : 'Add User')}}</div> -->
+
+  </div>
+</div>
+
+<!--Advanced filter Starts-->
+<section id="advanced">
+  <div class="row text-left" matchHeight="card">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header no-padding-bottom">
+          <h4 class="card-title" *ngIf="!productId">Add Product</h4>
+          <h4 class="card-title" *ngIf="productId">Edit Product</h4>
+        </div>
+        <div class="card-body">
+          <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-input-label">User Type</label>
+                  <div class="row">
+                    <div class="col-sm-4">
+                      <p-radioButton name="group1" [value]="3" label="Retailer" formControlName="userType">
+                      </p-radioButton>
+                    </div>
+                    <div class="col-sm-4">
+                      <p-radioButton name="group1" [value]="2" label="Supplier" formControlName="userType">
+                      </p-radioButton>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-input-label" *ngIf="form.controls['userType'].value === 3">Retailer</label>
+                  <label class="form-input-label" *ngIf="form.controls['userType'].value === 2">Supplier</label>
+                  <p-dropdown [options]="users$ | async" filter="true" formControlName="user" [autoDisplayFirst]="false"
+                    optionLabel="name" placeholder="Select User" filterBy="label,value.name,value.email">
+                  </p-dropdown>
+                  <small
+                    *ngIf="form.controls['user'].hasError('required') && (form.controls['user'].dirty || form.controls['user'].touched) && form.controls['userType'].value === 2"
+                    class="text-danger" translate>
+                    Supplier is required!
+                  </small>
+                  <small
+                    *ngIf="form.controls['user'].hasError('required') && (form.controls['user'].dirty || form.controls['user'].touched) && form.controls['userType'].value === 3"
+                    class="text-danger" translate>
+                    Retailer is required!
+                  </small>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-input-label">Category</label>
+                  <tree-select name="simpleSelect" [items]="categories$ | async" childrenField="children" tree-select
+                    formControlName="category" placeholder="Category">
+                  </tree-select>
+                  <small
+                    *ngIf="form.controls['category'].hasError('required') && (form.controls['category'].dirty || form.controls['category'].touched)"
+                    class="text-danger" translate>
+                    Category is required!
+                  </small>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-input-label">Name</label>
+                  <input type="text" class="form-control" placeholder="Name" formControlName="name">
+                  <small
+                    *ngIf="form.controls['name'].hasError('whitespace') && (form.controls['name'].dirty || form.controls['name'].touched)"
+                    class="text-danger" translate>
+                    Invalid value!
+                  </small>
+                  <small
+                    *ngIf="form.controls['name'].hasError('required') && (form.controls['name'].dirty || form.controls['name'].touched)"
+                    class="text-danger" translate>
+                    Product name is required!
+                  </small>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-input-label">MRP</label>
+                  <input type="text" class="form-control" placeholder="MRP" formControlName="cost_price">
+                  <small
+                    *ngIf="form.controls['cost_price'].hasError('pattern') && (form.controls['cost_price'].dirty || form.controls['cost_price'].touched)"
+                    class="text-danger" translate>
+                    Invalid value!
+                  </small>
+                  <small
+                    *ngIf="form.controls['cost_price'].hasError('min') && (form.controls['cost_price'].dirty || form.controls['cost_price'].touched)"
+                    class="text-danger" translate>
+                    Enter value greater than 0!
+                  </small>
+                  <small
+                    *ngIf="form.controls['cost_price'].hasError('required') && (form.controls['cost_price'].dirty || form.controls['cost_price'].touched)"
+                    class="text-danger" translate>
+                    Product MRP is required!
+                  </small>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-input-label">Selling Price</label>
+                  <input type="text" class="form-control" placeholder="Selling Price" formControlName="price">
+                  <small
+                    *ngIf="form.controls['price'].hasError('pattern') && (form.controls['price'].dirty || form.controls['price'].touched)"
+                    class="text-danger" translate>
+                    Invalid value!
+                  </small>
+                  <small
+                    *ngIf="form.controls['price'].hasError('min') && (form.controls['price'].dirty || form.controls['price'].touched)"
+                    class="text-danger" translate>
+                    Enter value greater than 0!
+                  </small>
+                  <small
+                    *ngIf="form.controls['price'].hasError('required') && (form.controls['price'].dirty || form.controls['price'].touched)"
+                    class="text-danger" translate>
+                    Product Selling Price is required!
+                  </small>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-input-label">Weight</label>
+                  <input type="text" class="form-control" placeholder="Weight" formControlName="weight">
+                  <small
+                    *ngIf="form.controls['weight'].hasError('pattern') && (form.controls['weight'].dirty || form.controls['weight'].touched)"
+                    class="text-danger" translate>
+                    Invalid value!
+                  </small>
+                  <small
+                    *ngIf="form.controls['weight'].hasError('min') && (form.controls['weight'].dirty || form.controls['weight'].touched)"
+                    class="text-danger" translate>
+                    Enter value greater than 0!
+                  </small>
+                  <small
+                    *ngIf="form.controls['weight'].hasError('max') && (form.controls['weight'].dirty || form.controls['weight'].touched)"
+                    class="text-danger" translate>
+                    Can enter maximum 10 digits for weight!
+                  </small>
+                  <small
+                    *ngIf="form.controls['weight'].hasError('required') && (form.controls['weight'].dirty || form.controls['weight'].touched)"
+                    class="text-danger" translate>
+                    Product weight is required!
+                  </small>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <label class="form-input-label">Volume</label>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label class="form-input-label">Length</label>
+                      <input type="text" class="form-control" placeholder="Length" formControlName="length">
+                      <small
+                        *ngIf="form.controls['length'].hasError('pattern') && (form.controls['length'].dirty || form.controls['length'].touched)"
+                        class="text-danger" translate>
+                        Invalid value!
+                      </small>
+                      <small
+                        *ngIf="form.controls['length'].hasError('min') && (form.controls['length'].dirty || form.controls['length'].touched)"
+                        class="text-danger" translate>
+                        Enter value greater than 0!
+                      </small>
+                      <small
+                        *ngIf="form.controls['length'].hasError('max') && (form.controls['length'].dirty || form.controls['length'].touched)"
+                        class="text-danger" translate>
+                        Can enter maximum 10 digits for length!
+                      </small>
+                      <small
+                        *ngIf="form.controls['length'].hasError('required') && (form.controls['length'].dirty || form.controls['length'].touched)"
+                        class="text-danger" translate>
+                        Product length is required!
+                      </small>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <!-- <label class="form-input-label">Volume</label> -->
+                      <label class="form-input-label">Breadth</label>
+                      <input type="text" class="form-control" placeholder="Breadth" formControlName="breadth">
+                      <small
+                        *ngIf="form.controls['breadth'].hasError('pattern') && (form.controls['breadth'].dirty || form.controls['breadth'].touched)"
+                        class="text-danger" translate>
+                        Invalid value!
+                      </small>
+                      <small
+                        *ngIf="form.controls['breadth'].hasError('min') && (form.controls['breadth'].dirty || form.controls['breadth'].touched)"
+                        class="text-danger" translate>
+                        Enter value greater than 0!
+                      </small>
+                      <small
+                        *ngIf="form.controls['breadth'].hasError('max') && (form.controls['breadth'].dirty || form.controls['breadth'].touched)"
+                        class="text-danger" translate>
+                        Can enter maximum 10 digits for breadth!
+                      </small>
+                      <small
+                        *ngIf="form.controls['breadth'].hasError('required') && (form.controls['breadth'].dirty || form.controls['breadth'].touched)"
+                        class="text-danger" translate>
+                        Product breadth is required!
+                      </small>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <!-- <label class="form-input-label">Volume</label> -->
+                      <label class="form-input-label">Height</label>
+                      <input type="text" class="form-control" placeholder="Height" formControlName="height">
+                      <small
+                        *ngIf="form.controls['height'].hasError('pattern') && (form.controls['height'].dirty || form.controls['height'].touched)"
+                        class="text-danger" translate>
+                        Invalid value!
+                      </small>
+                      <small
+                        *ngIf="form.controls['height'].hasError('min') && (form.controls['height'].dirty || form.controls['height'].touched)"
+                        class="text-danger" translate>
+                        Enter value greater than 0!
+                      </small>
+                      <small
+                        *ngIf="form.controls['height'].hasError('max') && (form.controls['height'].dirty || form.controls['height'].touched)"
+                        class="text-danger" translate>
+                        Can enter maximum 10 digits for height!
+                      </small>
+                      <small
+                        *ngIf="form.controls['height'].hasError('required') && (form.controls['height'].dirty || form.controls['height'].touched)"
+                        class="text-danger" translate>
+                        Product height is required!
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-input-label">Inventory Count</label>
+                  <input type="text" class="form-control" placeholder="Inventory Count"
+                    formControlName="inventory_count">
+                  <small
+                    *ngIf="form.controls['inventory_count'].hasError('pattern') && (form.controls['inventory_count'].dirty || form.controls['inventory_count'].touched)"
+                    class="text-danger" translate>
+                    Invalid value!
+                  </small>
+                  <small
+                    *ngIf="form.controls['inventory_count'].hasError('min') && (form.controls['inventory_count'].dirty || form.controls['inventory_count'].touched)"
+                    class="text-danger" translate>
+                    Enter value greater than or equal to 0!
+                  </small>
+                  <small
+                    *ngIf="form.controls['inventory_count'].hasError('required') && (form.controls['inventory_count'].dirty || form.controls['inventory_count'].touched)"
+                    class="text-danger" translate>
+                    Product inventory count is required!
+                  </small>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-input-label">HSN</label>
+                  <input type="text" class="form-control" placeholder="HSN" formControlName="hsn">
+                  <small
+                    *ngIf="form.controls['hsn'].hasError('pattern') && (form.controls['hsn'].dirty || form.controls['hsn'].touched)"
+                    class="text-danger" translate>
+                    Invalid value!
+                  </small>
+                  <small
+                    *ngIf="form.controls['hsn'].hasError('min') && (form.controls['hsn'].dirty || form.controls['hsn'].touched)"
+                    class="text-danger" translate>
+                    Enter value greater than 0!
+                  </small>
+                  <small
+                    *ngIf="form.controls['hsn'].hasError('required') && (form.controls['hsn'].dirty || form.controls['hsn'].touched)"
+                    class="text-danger" translate>
+                    Product hsn is required!
+                  </small>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-input-label">GST %</label>
+                  <!-- <input type="text" class="form-control" placeholder="GST" formControlName="gst"> -->
+                  <p-dropdown [options]="gst" filter="true" formControlName="gst" [autoDisplayFirst]="false"
+                    placeholder="Select GST %"></p-dropdown>
+                  <small
+                    *ngIf="form.controls['gst'].hasError('pattern') && (form.controls['gst'].dirty || form.controls['gst'].touched)"
+                    class="text-danger" translate>
+                    Invalid value!
+                  </small>
+                  <small
+                    *ngIf="form.controls['gst'].hasError('min') && (form.controls['gst'].dirty || form.controls['gst'].touched)"
+                    class="text-danger" translate>
+                    Enter value greater than 0!
+                  </small>
+                  <small
+                    *ngIf="form.controls['gst'].hasError('required') && (form.controls['gst'].dirty || form.controls['gst'].touched)"
+                    class="text-danger" translate>
+                    Product gst is required!
+                  </small>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-input-label">Barcode</label>
+                  <input type="text" class="form-control" placeholder="Barcode" formControlName="barcode">
+                  <small
+                    *ngIf="form.controls['barcode'].hasError('pattern') && (form.controls['barcode'].dirty || form.controls['barcode'].touched)"
+                    class="text-danger" translate>
+                    Invalid value!
+                  </small>
+                  <small
+                    *ngIf="form.controls['barcode'].hasError('required') && (form.controls['barcode'].dirty || form.controls['barcode'].touched)"
+                    class="text-danger" translate>
+                    Product barcode is required!
+                  </small>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-input-label">Vendor SKU</label>
+                  <input type="text" class="form-control" placeholder="Vendor SKU" formControlName="vendorSKU">
+                  <small
+                    *ngIf="form.controls['vendorSKU'].hasError('pattern') && (form.controls['vendorSKU'].dirty || form.controls['vendorSKU'].touched)"
+                    class="text-danger" translate>
+                    Invalid value!
+                  </small>
+                  <small
+                    *ngIf="form.controls['vendorSKU'].hasError('required') && (form.controls['vendorSKU'].dirty || form.controls['vendorSKU'].touched)"
+                    class="text-danger" translate>
+                    Product barcode type is required!
+                  </small>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-input-label">Barcode Type</label>
+                  <!-- <input type="text" class="form-control" placeholder="Barcode Type" formControlName="barcode_type"> -->
+                  <p-dropdown [options]="barcodeType" filter="true" formControlName="barcode_type"
+                    [autoDisplayFirst]="false" placeholder="Barcode Type"></p-dropdown>
+                  <small
+                    *ngIf="form.controls['barcode_type'].hasError('pattern') && (form.controls['barcode_type'].dirty || form.controls['barcode_type'].touched)"
+                    class="text-danger" translate>
+                    Invalid value!
+                  </small>
+                  <small
+                    *ngIf="form.controls['barcode_type'].hasError('required') && (form.controls['barcode_type'].dirty || form.controls['barcode_type'].touched)"
+                    class="text-danger" translate>
+                    Product barcode type is required!
+                  </small>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-input-label"> Active (in days)</label>
+                  <input type="text" class="form-control" placeholder="Active" formControlName="active">
+                  <small
+                    *ngIf="form.controls['active'].hasError('pattern') && (form.controls['active'].dirty || form.controls['active'].touched)"
+                    class="text-danger" translate>
+                    Invalid value!
+                  </small>
+                  <small
+                    *ngIf="form.controls['active'].hasError('min') && (form.controls['active'].dirty || form.controls['active'].touched)"
+                    class="text-danger" translate>
+                    Enter value greater than 0!
+                  </small>
+                  <small
+                    *ngIf="form.controls['active'].hasError('required') && (form.controls['active'].dirty || form.controls['active'].touched)"
+                    class="text-danger" translate>
+                    Product active is required!
+                  </small>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="form-input-label">Description</label>
+                  <p-editor placeholder="Description" formControlName="description" [style]="{'height':'320px'}">
+                  </p-editor>
+                  <small
+                    *ngIf="form.controls['description'].hasError('whitespace') && (form.controls['description'].dirty || form.controls['description'].touched)"
+                    class="text-danger" translate>
+                    Invalid value!
+                  </small>
+                  <small
+                    *ngIf="form.controls['description'].hasError('required') && (form.controls['description'].dirty || form.controls['description'].touched)"
+                    class="text-danger" translate>
+                    Product description is required!
+                  </small>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="form-input-label">Tags</label>
+                  <p-autoComplete [suggestions]="tags$ | async" (completeMethod)="searchTags($event)"
+                    formControlName="tags" field="name" [multiple]="true" emptyMessage="No tags found!"
+                    placeholder="Enter tag name">
+                  </p-autoComplete>
+                </div>
+              </div>
+              <div class="col-sm-12" formArrayName="product_attributes"
+                *ngFor="let project of form.get('product_attributes')['controls']; let i=index">
+                <div class="row" [formGroupName]="i">
+                  <div class="col-sm-5">
+                    <div class="form-group">
+                      <label class="form-input-label">Name</label>
+                      <input type="text" class="form-control" placeholder="Name" formControlName="name">
+                      <small
+                        *ngIf="form.controls['product_attributes']['controls'][i].controls['name'].hasError('required') && (form.controls['product_attributes']['controls'][i].controls['name'].dirty || form.controls['product_attributes']['controls'][i].controls['name'].touched)"
+                        class="text-danger" translate>
+                        Name is required!
+                      </small>
+                    </div>
+                  </div>
+                  <div class="col-sm-5">
+                    <div class="form-group">
+                      <label class="form-input-label">Value</label>
+                      <input type="text" class="form-control" placeholder="Value" formControlName="value">
+                      <small
+                        *ngIf="form.controls['product_attributes']['controls'][i].controls['value'].hasError('required') && (form.controls['product_attributes']['controls'][i].controls['value'].dirty || form.controls['product_attributes']['controls'][i].controls['value'].touched)"
+                        class="text-danger" translate>
+                        Value is required!
+                      </small>
+                    </div>
+                  </div>
+                  <div class="col-sm-2" style="    display: flex;
+                  align-items: center;
+                  justify-content: center;">
+                    <a class="text-danger" (click)="removeProductAttributeForm(i)">Remove</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <span>
+                  <button type="button" class="btn btn-primary btn-raised" (click)="addProductAttributeForm()">Add
+                    Attribute</button>
+                </span>
+              </div>
+              <div class="col-sm-3">
+                <span>
+                  <button type="button" class="btn btn-primary btn-raised" *ngIf="(attributes$ | async).length"
+                    (click)="openModal(createVariants)">Add
+                    Variants</button>
+                </span>
+              </div>
+              <div formArrayName="product_variant"
+                *ngFor="let project of form.get('product_variant')['controls']; let i=index" class="col-sm-12">
+                <div class="card no-padding" style="border: 1px solid #A6A9AE;">
+                  <div class="card-header no-padding-bottom">
+                    <div class="row">
+                      <div class="col-sm-10">
+                        <h4 class="card-title">{{ getFormAttributeValueMap(i) | joincomma}}</h4>
+                      </div>
+                      <div class="col-sm-2">
+                        <a class="pull-right text-danger" (click)="removeProductVariant(i)">Remove</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-body no-padding-top">
+                    <div [formGroupName]="i" class="row">
+                      <div class="form-group col-sm-4">
+                        <label class="form-input-label">Quantity</label>
+                        <input type="number" class="form-control" placeholder="Quantity" formControlName="quantity">
+                      </div>
+                      <div class="form-group col-sm-4">
+                        <label class="form-input-label">Selling Price</label>
+                        <input type="number" class="form-control" placeholder="Selling Price"
+                          formControlName="price_override">
+                      </div>
+                      <div class="form-group col-sm-4">
+                        <label class="form-input-label">MRP</label>
+                        <input type="number" class="form-control" placeholder="MRP" formControlName="cost_price">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions col-md-12">
+                <button class="btn btn-raised btn-primary pull-right">
+                  <i class="fa fa-check-square-o"></i> Save
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<ng-template #createVariants let-c="close" let-d="dismiss">
+  <form [formGroup]="variantForm" (ngSubmit)="onVariantFormSubmit()">
+    <div class="modal-header">
+      <h4 class="modal-title">Create Variants</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group" *ngFor="let attribute of attributes$ | async">
+        <label class="form-input-label">{{ attribute.name }}</label>
+        <p-multiSelect [options]="attribute.attribute_choice" formControlName="{{ attribute.name.toLowerCase() }}"
+          optionLabel="name" *ngIf="attribute.attribute_choice.length">
+        </p-multiSelect>
+        <span class="d-block" *ngIf="!attribute.attribute_choice.length">No choices added for this attribute.</span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-primary btn-raised" [disabled]="!saveButtonEnable">
+        <i class="fa fa-check-square-o"></i>Save</button>
+    </div>
+  </form>
+</ng-template>
+<!--Advanced filter Ends-->

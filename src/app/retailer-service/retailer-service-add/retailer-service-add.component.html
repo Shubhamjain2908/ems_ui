@@ -1,0 +1,126 @@
+<div class="row text-left">
+  <div class="col-12">
+    <!-- <div class="content-header">{{(actionType=='edit')? (userRole == 'SP' ? 'Edit Service Provider' : 'Edit User') : (userRole == 'SP' ? 'Add Service Provider' : 'Add User')}}</div> -->
+
+  </div>
+</div>
+
+<!--Advanced filter Starts-->
+<section id="advanced">
+  <div class="row text-left" matchHeight="card">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header no-padding-bottom">
+          <h4 class="card-title" *ngIf="!serviceId">Add Service</h4>
+          <h4 class="card-title" *ngIf="serviceId">Edit Service</h4>
+        </div>
+        <div class="card-body">
+          <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-input-label">Retailer</label>
+                  <p-dropdown [options]="users$ | async" filter="true" formControlName="retailer_id"
+                    [autoDisplayFirst]="false" optionLabel="name" placeholder="Select Retailer"
+                    filterBy="label,value.name,value.email">
+                  </p-dropdown>
+                  <small
+                    *ngIf="form.controls['retailer_id'].hasError('required') && (form.controls['retailer_id'].dirty || form.controls['retailer_id'].touched)"
+                    class="text-danger" translate>
+                    Retailer is required!
+                  </small>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-input-label">Category</label>
+                  <tree-select name="simpleSelect" [items]="categories$ | async" childrenField="children" tree-select
+                    formControlName="category_id" placeholder="Category">
+                  </tree-select>
+                  <small
+                    *ngIf="form.controls['category_id'].hasError('required') && (form.controls['category_id'].dirty || form.controls['category_id'].touched)"
+                    class="text-danger" translate>
+                    Category is required!
+                  </small>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="form-input-label">Name</label>
+                  <input type="text" class="form-control" placeholder="Name" formControlName="service_name">
+                  <small
+                    *ngIf="form.controls['service_name'].hasError('whitespace') && (form.controls['service_name'].dirty || form.controls['service_name'].touched)"
+                    class="text-danger" translate>
+                    Invalid value!
+                  </small>
+                  <small
+                    *ngIf="form.controls['service_name'].hasError('required') && (form.controls['service_name'].dirty || form.controls['service_name'].touched)"
+                    class="text-danger" translate>
+                    Service name is required!
+                  </small>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-input-label">Service Price</label>
+                  <input type="text" class="form-control" placeholder="Service Price" formControlName="service_price">
+                  <small
+                    *ngIf="form.controls['service_price'].hasError('pattern') && (form.controls['service_price'].dirty || form.controls['service_price'].touched)"
+                    class="text-danger" translate>
+                    Invalid value!
+                  </small>
+                  <small
+                    *ngIf="form.controls['service_price'].hasError('min') && (form.controls['service_price'].dirty || form.controls['service_price'].touched)"
+                    class="text-danger" translate>
+                    Enter value greater than 0!
+                  </small>
+                  <small
+                    *ngIf="form.controls['service_price'].hasError('required') && (form.controls['service_price'].dirty || form.controls['service_price'].touched)"
+                    class="text-danger" translate>
+                    Service Price is required!
+                  </small>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="form-input-label">Description</label>
+                  <p-editor placeholder="Description" formControlName="service_description"
+                    [style]="{'height':'320px'}">
+                  </p-editor>
+                  <small
+                    *ngIf="form.controls['service_description'].hasError('whitespace') && (form.controls['service_description'].dirty || form.controls['service_description'].touched)"
+                    class="text-danger" translate>
+                    Invalid value!
+                  </small>
+                  <small
+                    *ngIf="form.controls['service_description'].hasError('required') && (form.controls['service_description'].dirty || form.controls['service_description'].touched)"
+                    class="text-danger" translate>
+                    Service description is required!
+                  </small>
+                </div>
+              </div>
+              <div class="form-actions  image-flex-wrapper">
+                <div *ngFor="let url of urls" class="image-relative-wrapper">
+                  <img [src]="url.url" class="rounded mb-3">
+                  <div class="close-icon" (click)="confirmTextImage(url)">
+                    <i class="fa fa-close"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions col-md-12">
+                <p-fileUpload multiple="true" accept="image/*" (onSelect)="selectFile($event)"
+                  [showUploadButton]="false" [showCancelButton]="false" chooseLabel="Upload Image"></p-fileUpload>
+              </div>
+              <div class="form-actions col-md-12">
+                <button class="btn btn-raised btn-primary pull-right">
+                  <i class="fa fa-check-square-o"></i> Save
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Advanced filter Ends-->

@@ -1,11 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-
-var fireRefreshEventOnWindow = function () {
-    var evt = document.createEvent("HTMLEvents");
-    evt.initEvent('resize', true, false);
-    window.dispatchEvent(evt);
-};
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'app-full-layout',
@@ -13,28 +6,8 @@ var fireRefreshEventOnWindow = function () {
     styleUrls: ['./full-layout.component.scss']
 })
 
-export class FullLayoutComponent implements OnInit {
-
+export class FullLayoutComponent {
     options = {
         direction: 'ltr'
     };
-
-
-    constructor(private elementRef: ElementRef) { }
-
-    ngOnInit() {
-        //sidebar toggle event listner
-        this.elementRef.nativeElement.querySelector('#sidebarToggle')
-            .addEventListener('click', this.onClick.bind(this));
-    }
-
-    onClick(event) {
-        //initialize window resizer event on sidebar toggle click event
-        setTimeout(() => { fireRefreshEventOnWindow() }, 300);
-    }
-
-    getOptions($event): void {
-        this.options = $event;
-    }
-
 }

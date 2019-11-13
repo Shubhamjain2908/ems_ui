@@ -1,0 +1,89 @@
+<form [formGroup]="addNotificationForm" (ngSubmit)="onAddNotification()">
+  <div class="modal-header">
+    <h4 class="modal-title">Add Notification / Promotion</h4>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-4">
+
+        <div class="form-group">
+          <label for="projectinput1">Notification Message</label>
+          <div class="input-group">
+            <textarea type="text-area" class="form-control" formControlName="notificationMessage"
+              placeholder="Notification Message" aria-describedby="basic-addon3"></textarea>
+          </div>
+          <div
+            *ngIf="addNotificationForm.controls['notificationMessage'].hasError('required') && (addNotificationForm.controls['notificationMessage'].dirty || addNotificationForm.controls['notificationMessage'].touched)"
+            class="error">
+            Please enter a notification message id
+          </div>
+          <div *ngIf="addNotificationForm.controls['notificationMessage'].hasError('notificationMessage')"
+            class="error">
+            Please enter a valid notification message
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-input-label">Image</label>
+          <input type="file" class="form-control" accept="image/*" placeholder="Image" (change)="selectFile($event)">
+          <small
+            *ngIf="addNotificationForm.controls['imageUrl'].hasError('whitespace') && (addNotificationForm.controls['imageUrl'].dirty || addNotificationForm.controls['imageUrl'].touched)"
+            class="text-danger" translate>
+            Invalid value!
+          </small>
+          <small
+            *ngIf="addNotificationForm.controls['imageUrl'].hasError('required') && (addNotificationForm.controls['imageUrl'].dirty || addNotificationForm.controls['imageUrl'].touched)"
+            class="text-danger" translate>
+            Collection image is required!
+          </small>
+        </div>
+        <div class="form-group">
+          <label for="projectinput1">User Types</label>
+          <div class="input-group">
+            <p-multiSelect [options]="userTypes" formControlName="userTypes" optionLabel="option">
+            </p-multiSelect>
+          </div>
+          <div
+            *ngIf="addNotificationForm.controls['userTypes'].hasError('required') && (addNotificationForm.controls['userTypes'].dirty || addNotificationForm.controls['userTypes'].touched)"
+            class="error">
+            Please select User Types
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-input-label">Tags</label>
+          <p-autoComplete [suggestions]="tags$ | async" (completeMethod)="searchTags($event)" formControlName="tags"
+            field="name" [multiple]="true" emptyMessage="No tags found!" placeholder="Enter tag name">
+          </p-autoComplete>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-md-6">
+
+            <div class="form-group">
+              <label for="projectinput1">Notification Link</label>
+              <div class="input-group">
+                <input type="text" class="form-control" formControlName="notificationLink"
+                  placeholder="Notification Link" aria-describedby="basic-addon3">
+              </div>
+              <div
+                *ngIf="addNotificationForm.controls['notificationLink'].hasError('required') && (addNotificationForm.controls['notificationLink'].dirty || addNotificationForm.controls['notificationLink'].touched)"
+                class="error">
+                Please enter a notification link
+              </div>
+              <div *ngIf="addNotificationForm.controls['notificationLink'].hasError('pattern')" class="error">
+                Please enter a valid notification link
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- </div> -->
+
+  <div class="modal-footer">
+    <button type="submit" [disabled]="!addNotificationForm.valid" class="btn btn-primary btn-raised">
+      <i class="fa fa-check-square-o"></i>Send Notifications</button>
+  </div>
+</form>

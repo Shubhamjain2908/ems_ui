@@ -1,0 +1,28 @@
+ul.dropdown-menu {
+  display: block !important;
+}
+
+.image-flex-wrapper {
+  display:flex;
+  flex-wrap:wrap;
+}
+
+.image-flex-wrapper > img {
+  margin-right: 1em;
+  // width: 25%
+}
+
+.image-relative-wrapper {
+  position: relative;
+  width:18%;
+  margin-right:1em;
+}
+
+.close-icon {
+  content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 23px;
+  cursor: pointer;
+}

@@ -1,0 +1,141 @@
+<div class="row text-left">
+  <div class="col-12">
+    <!-- <div class="content-header">{{(actionType=='edit')? (userRole == 'SP' ? 'Edit Service Provider' : 'Edit User') : (userRole == 'SP' ? 'Add Service Provider' : 'Add User')}}</div> -->
+
+  </div>
+</div>
+
+<!--Advanced filter Starts-->
+<section id="advanced">
+  <div class="row text-left" matchHeight="card">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header" *ngIf="!bannerId">
+          <h4 class="card-title">Add Banner</h4>
+        </div>
+        <div class="card-header" *ngIf="bannerId">
+          <h4 class="card-title">Edit Banner</h4>
+        </div>
+        <div class="px-3">
+          <div class="card-body">
+            <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group d-flex flex-column">
+                    <label class="form-input-label">Category</label>
+                    <p-dropdown [options]="categories$ | async" filter="true" formControlName="categoryId"
+                      [autoDisplayFirst]="false" placeholder="Select Category"></p-dropdown>
+                    <small
+                      *ngIf="form.controls['categoryId'].hasError('required') && (form.controls['categoryId'].dirty || form.controls['categoryId'].touched)"
+                      class="text-danger" translate>
+                      Category is required!
+                    </small>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label class="form-input-label">Entity Type</label>
+                    <div class="row">
+                      <!-- <div class="col-sm-4">
+                        <p-radioButton name="group1" [value]="category" label="Category" formControlName="entityType">
+                        </p-radioButton>
+                      </div>
+                      <div class="col-sm-4">
+                        <p-radioButton name="group1" [value]="subcategory" label="Subcategory"
+                          formControlName="entityType">
+                        </p-radioButton>
+                      </div>
+                      <div class="col-sm-4">
+                        <p-radioButton name="group1" [value]="subsubcategory" label="Sub Subcategory"
+                          formControlName="entityType">
+                        </p-radioButton>
+                      </div> -->
+                      <div class="col-sm-4">
+                        <select name="type" class="form-control" formControlName="entityType"
+                          aria-describedby="basic-addon3">
+                          <option value="category">Category</option>
+                          <option value="subcategory">Subcategory</option>
+                          <option value="subsubcategory">Sub-Subcategory</option>
+                        </select>
+                      </div>
+                    </div>
+                    <small
+                      *ngIf="form.controls['entityType'].hasError('required') && (form.controls['entityType'].dirty || form.controls['entityType'].touched)"
+                      class="text-danger" translate>
+                      Entity type is required!
+                    </small>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="form-group d-flex flex-column">
+                    <label class="form-input-label">Entity</label>
+                    <p-dropdown [options]="options$ | async" filter="true" formControlName="entityId"
+                      [autoDisplayFirst]="false" placeholder="Select Entity"></p-dropdown>
+                    <small
+                      *ngIf="form.controls['entityId'].hasError('required') && (form.controls['entityId'].dirty || form.controls['entityId'].touched)"
+                      class="text-danger" translate>
+                      Entity is required!
+                    </small>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label class="form-input-label">Name</label>
+                    <input type="text" class="form-control" placeholder="Name" formControlName="name">
+                    <small
+                      *ngIf="form.controls['name'].hasError('whitespace') && (form.controls['name'].dirty || form.controls['name'].touched)"
+                      class="text-danger" translate>
+                      Invalid value!
+                    </small>
+                    <small
+                      *ngIf="form.controls['name'].hasError('required') && (form.controls['name'].dirty || form.controls['name'].touched)"
+                      class="text-danger" translate>
+                      Banner name is required!
+                    </small>
+                  </div>
+                </div>
+                <!-- <div class="col-sm-12">
+                  <div class="form-group">
+                    <label class="form-input-label">URL</label>
+                    <input type="text" class="form-control" placeholder="URL" formControlName="url">
+                    <small
+                      *ngIf="form.controls['url'].hasError('whitespace') && (form.controls['url'].dirty || form.controls['url'].touched)"
+                      class="text-danger" translate>
+                      Invalid value!
+                    </small>
+                    <small
+                      *ngIf="form.controls['url'].hasError('required') && (form.controls['url'].dirty || form.controls['url'].touched)"
+                      class="text-danger" translate>
+                      Banner url is required!
+                    </small>
+                  </div>
+                </div> -->
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label class="form-input-label">Image</label>
+                    <input type="file" class="form-control" accept="image/*" placeholder="Image"
+                      (change)="selectFile($event)">
+                    <div *ngIf='image'>
+                      <img style="width:100px;height:100px;object-fit:cover" src="{{image}}">
+                    </div>
+                    <small
+                      *ngIf="form.controls['imageUrl'].hasError('required') && (form.controls['imageUrl'].dirty || form.controls['imageUrl'].touched)"
+                      class="text-danger" translate>
+                      Please select banner image
+                    </small>
+                  </div>
+                </div>
+                <div class="form-actions col-md-12">
+                  <button class="btn btn-raised btn-primary pull-right">
+                    <i class="fa fa-check-square-o"></i> Save
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Advanced filter Ends-->
